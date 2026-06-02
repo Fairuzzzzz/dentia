@@ -1,0 +1,67 @@
+<%= form_with model: @patient, class: "space-y-4" do |f| %>
+  <% if @patient.errors.any? %>
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+      <ul class="list-disc pl-4 space-y-1">
+        <% @patient.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <%= f.label :nik, "NIK", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :nik, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "16 digit NIK" %>
+    </div>
+
+    <div>
+      <%= f.label :patient_number, "No. Rekam Medis", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :patient_number, class: "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 text-gray-500", disabled: true, value: @patient.patient_number || "Otomatis" %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :name, "Nama Lengkap", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :name, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Nama lengkap pasien" %>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <%= f.label :birth_date, "Tanggal Lahir", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.date_field :birth_date, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+    </div>
+
+    <div>
+      <%= f.label :gender, "Jenis Kelamin", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.select :gender, options_for_select([["Laki-laki", "male"], ["Perempuan", "female"]], @patient.gender), { prompt: "Pilih" }, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <%= f.label :phone, "No. Telepon", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :phone, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "0812xxxx" %>
+    </div>
+
+    <div>
+      <%= f.label :blood_type, "Golongan Darah", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.select :blood_type, options_for_select(["A", "B", "AB", "O"], @patient.blood_type), { prompt: "Pilih" }, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :address, "Alamat", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_area :address, rows: 3, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Alamat lengkap" %>
+  </div>
+
+  <div>
+    <%= f.label :allergies, "Alergi", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_area :allergies, rows: 2, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Alergi obat / makanan (jika ada)" %>
+  </div>
+
+  <div class="flex items-center gap-3 pt-3 border-t border-gray-100">
+    <%= f.submit class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" %>
+    <%= link_to "Batal", patients_path, class: "px-4 py-2 text-gray-600 hover:text-gray-800 transition text-sm" %>
+  </div>
+<% end %>

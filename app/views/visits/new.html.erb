@@ -1,0 +1,42 @@
+<div class="max-w-4xl mx-auto">
+  <div class="flex items-center gap-3 mb-6">
+    <%= link_to visits_path, class: "p-1.5 text-gray-400 hover:text-gray-600 transition" do %>
+      <%= lucide_icon "arrow-left", class: "w-5 h-5" %>
+    <% end %>
+    <h1 class="text-2xl font-bold text-gray-900">Kunjungan Baru</h1>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <%= form_with model: @visit, class: "space-y-4" do |f| %>
+      <% if @visit.errors.any? %>
+        <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          <ul class="list-disc pl-4 space-y-1">
+            <% @visit.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div>
+        <%= f.label :patient_id, "Pasien", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.collection_select :patient_id, Patient.order(:name), :id, :name, { prompt: "Pilih pasien" }, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", data: { controller: "select" } %>
+        <p class="mt-1 text-xs text-gray-400">
+          Atau <%= link_to "daftarkan pasien baru", new_patient_path, class: "text-teal-600 hover:underline", target: "_blank" %>
+        </p>
+      </div>
+
+      <%= f.hidden_field :visit_date, value: Time.current %>
+
+      <div>
+        <%= f.label :chief_complaint, "Keluhan Utama", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_area :chief_complaint, rows: 2, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Keluhan utama pasien" %>
+      </div>
+
+      <div class="flex items-center gap-3 pt-3 border-t border-gray-100">
+        <%= f.submit "Buat Kunjungan", class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" %>
+        <%= link_to "Batal", visits_path, class: "px-4 py-2 text-gray-600 hover:text-gray-800 transition text-sm" %>
+      </div>
+    <% end %>
+  </div>
+</div>
