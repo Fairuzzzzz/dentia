@@ -127,7 +127,8 @@ class VisitsController < ApplicationController
           :id, :systole, :diastole, :heart_rate, :consciousness,
           :respiration_rate, :height, :weight, :body_temperature,
           :waist_circumference, :bmi, :physical_examination,
-          :supporting_action, :lab_result_notes
+          :supporting_action, :lab_result_notes,
+          odontogram_attributes: [:id, :teeth_data, :notes]
         ],
         assessment_attributes: [ :id, :icd_code, :diagnosis, :diagnosis_notes ],
         plan_attributes: [
@@ -145,6 +146,7 @@ class VisitsController < ApplicationController
 
     mr.create_subjective_examination! unless mr.subjective_examination
     mr.create_objective_examination! unless mr.objective_examination
+    mr.objective_examination.create_odontogram! unless mr.objective_examination.odontogram
     mr.create_assessment! unless mr.assessment
     mr.create_plan! unless mr.plan
 
