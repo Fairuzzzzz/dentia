@@ -1,0 +1,69 @@
+<div class="max-w-4xl mx-auto">
+  <div class="flex items-center gap-3 mb-6">
+    <%= link_to billings_path, class: "p-1.5 text-gray-400 hover:text-gray-600 transition" do %>
+      <%= lucide_icon "arrow-left", class: "w-5 h-5" %>
+    <% end %>
+    <h1 class="text-2xl font-bold text-gray-900">Detail Pembiayaan</h1>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+    <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0">No. Kunjungan</span><span class="font-mono text-gray-900"><%= @billing.visit.visit_number %></span></div>
+      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0">Status</span>
+        <% if @billing.paid? %>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Lunas</span>
+        <% else %>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Belum Dibayar</span>
+        <% end %>
+      </div>
+      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0">Pasien</span><span class="text-gray-900 font-medium"><%= @billing.visit.patient.name %></span></div>
+      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0">Tanggal</span><span class="text-gray-900"><%= @billing.created_at.strftime("%d %B %Y") %></span></div>
+    </div>
+
+    <table class="w-full mb-4">
+      <thead>
+        <tr class="border-y border-gray-200">
+          <th class="text-left py-2 text-xs font-medium text-gray-500 uppercase">Tindakan</th>
+          <th class="text-center py-2 text-xs font-medium text-gray-500 uppercase">Qty</th>
+          <th class="text-right py-2 text-xs font-medium text-gray-500 uppercase">Harga</th>
+          <th class="text-right py-2 text-xs font-medium text-gray-500 uppercase">Total</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @billing.billing_items.each do |item| %>
+          <tr>
+            <td class="py-2 text-sm text-gray-900"><%= item.treatment_name %></td>
+            <td class="py-2 text-sm text-center text-gray-600"><%= item.quantity %></td>
+            <td class="py-2 text-sm text-right text-gray-600"><%= number_to_currency(item.unit_price, unit: "Rp ", separator: ",", delimiter: ".") %></td>
+            <td class="py-2 text-sm text-right font-medium text-gray-900"><%= number_to_currency(item.total_price, unit: "Rp ", separator: ",", delimiter: ".") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr class="border-t-2 border-gray-300">
+          <td colspan="3" class="py-2 text-sm font-bold text-right text-gray-900">TOTAL</td>
+          <td class="py-2 text-sm font-bold text-right text-gray-900"><%= number_to_currency(@billing.total_amount, unit: "Rp ", separator: ",", delimiter: ".") %></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <% if @billing.paid? %>
+      <p class="text-sm text-gray-600">
+        Dibayar via <strong><%= @billing.payment_method&.humanize %></strong> pada <%= @billing.paid_at&.strftime("%d %B %Y %H:%M") %>
+      </p>
+    <% end %>
+  </div>
+
+  <% unless @billing.paid? %>
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+      <h2 class="text-lg font-bold text-gray-900 mb-4">Catat Pembayaran</h2>
+      <%= form_tag mark_as_paid_billing_path(@billing), method: :patch, class: "flex items-end gap-3" do %>
+        <div>
+          <%= label_tag :payment_method, "Metode Pembayaran", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= select_tag :payment_method, options_for_select([["Cash", "cash"], ["Transfer Bank", "transfer"], ["BPJS", "bpjs"], ["Asuransi", "insurance"]]), prompt: "Pilih metode", class: "w-48 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+        </div>
+        <%= submit_tag "Tandai Lunas", class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

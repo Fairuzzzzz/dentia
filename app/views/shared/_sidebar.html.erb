@@ -17,10 +17,9 @@
     <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100" do %>
       <%= lucide_icon "calendar", class: "w-4 h-4" %> Jadwal
     <% end %>
-    <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100" do %>
+    <%= link_to billings_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{controller_name == 'billings' ? 'bg-teal-50 text-teal-700 font-medium' : 'text-gray-700 hover:bg-gray-100'}" do %>
       <%= lucide_icon "wallet", class: "w-4 h-4" %> Pembiayaan
-    <% end %>
-    <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100" do %>
+    <% end %>    <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100" do %>
       <%= lucide_icon "chart-bar", class: "w-4 h-4" %> Laporan
     <% end %>
     <%= link_to treatment_catalogs_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{current_page?(treatment_catalogs_path) ? 'bg-teal-50 text-teal-700 font-medium' : 'text-gray-700 hover:bg-gray-100'}" do %>

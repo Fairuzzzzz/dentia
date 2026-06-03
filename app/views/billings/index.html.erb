@@ -1,0 +1,59 @@
+<div class="max-w-4xl mx-auto">
+  <div class="flex items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Pembiayaan</h1>
+  </div>
+
+  <%= form_tag billings_path, method: :get, class: "mb-4 flex flex-wrap gap-2" do %>
+    <%= text_field_tag :search, params[:search], placeholder: "Cari pasien...", class: "w-full max-w-xs px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+    <%= select_tag :status, options_for_select([["Semua Status", ""], ["Belum Dibayar", "unpaid"], ["Lunas", "paid"]], params[:status]), class: "px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+    <%= submit_tag "Filter", class: "px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition text-sm font-medium cursor-pointer" %>
+  <% end %>
+
+  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 border-b border-gray-200">
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Pasien</th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Kunjungan</th>
+          <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Pembayaran</th>
+          <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @billings.each do |billing| %>
+          <tr class="hover:bg-gray-50 transition">
+            <td class="px-4 py-3 text-sm text-gray-600"><%= billing.created_at.strftime("%d/%m/%Y") %></td>
+            <td class="px-4 py-3 text-sm font-medium text-gray-900"><%= billing.visit.patient.name %></td>
+            <td class="px-4 py-3 text-sm font-mono text-gray-600"><%= billing.visit.visit_number %></td>
+            <td class="px-4 py-3 text-sm text-right font-medium text-gray-900"><%= number_to_currency(billing.total_amount, unit: "Rp ", separator: ",", delimiter: ".") %></td>
+            <td class="px-4 py-3">
+              <% if billing.paid? %>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Lunas</span>
+              <% else %>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Belum Dibayar</span>
+              <% end %>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-600"><%= billing.payment_method&.humanize || "-" %></td>
+            <td class="px-4 py-3 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <%= link_to billing, class: "p-1.5 text-gray-400 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition" do %>
+                  <%= lucide_icon "eye", class: "w-4 h-4" %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+        <% if @billings.empty? %>
+          <tr>
+            <td colspan="7" class="px-4 py-12 text-center text-gray-400">
+              Belum ada data pembiayaan. Data akan muncul otomatis saat kunjungan selesai.
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
