@@ -51,6 +51,11 @@
       <p class="text-sm text-gray-600">
         Dibayar via <strong><%= @billing.payment_method&.humanize %></strong> pada <%= @billing.paid_at&.strftime("%d %B %Y %H:%M") %>
       </p>
+      <div class="mt-4">
+        <%= link_to print_invoice_billing_path(@billing), class: "inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition" do %>
+          <%= lucide_icon "printer", class: "w-3 h-3" %> Cetak Invoice
+        <% end %>
+      </div>
     <% end %>
   </div>
 

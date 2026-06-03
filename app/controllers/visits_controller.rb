@@ -67,6 +67,50 @@ class VisitsController < ApplicationController
     end
   end
 
+  def print_prescription
+    @visit = Visit.includes(:patient, medical_record: { plan: :prescriptions }).find(params[:id])
+    @doctor = current_user
+    @plan = @visit.medical_record&.plan
+
+    pdf = Prawn::Document.new(page_size: "A5", margin: [ 30, 30, 30, 30 ])
+
+    # Header
+    pdf.text @doctor.clinic_name.presence || "KLINIK GIGI", size: 14, style: :bold
+    pdf.text "SIP: #{@doctor.sip_number}" if @doctor.sip_number.present?
+    pdf.text @doctor.clinic_address if @doctor.clinic_address.present?
+    pdf.text "Telp: #{@doctor.clinic_phone}" if @doctor.clinic_phone.present?
+    pdf.move_down 10
+
+    # Patient info
+    pdf.text "Tanggal: #{Date.current.strftime('%d/%m/%Y')}", size: 10
+    pdf.text "Pasien: #{@visit.patient.name}"
+    pdf.text "No. RM: #{@visit.patient.patient_number}"
+    pdf.move_down 10
+
+    # Separator
+    pdf.stroke_horizontal_rule
+    pdf.move_down 10
+
+    # Prescriptions
+    if @plan&.prescriptions&.any?
+      @plan.prescriptions.each do |pres|
+        pdf.text "R/  #{pres.drug_name} #{pres.dosage}", size: 11
+        pdf.text "    #{pres.frequency} selama #{pres.duration}", size: 10, indent_paragraphs: 20
+        pdf.text "    (#{pres.notes})", size: 9, indent_paragraphs: 20 if pres.notes.present?
+        pdf.move_down 8
+      end
+    else
+      pdf.text "Tidak ada resep", size: 10, style: :italic
+    end
+
+    pdf.move_down 20
+    pdf.stroke_horizontal_rule
+    pdf.move_down 20
+    pdf.text "#{@doctor.name}", size: 11, align: :right
+
+    send_data pdf.render, filename: "resep-#{@visit.visit_number}.pdf", type: "application/pdf"
+  end
+
   private
 
   def set_visit
