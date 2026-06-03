@@ -1,0 +1,55 @@
+<% 
+  start_date = @date.beginning_of_month.beginning_of_week(:monday)
+  end_date = @date.end_of_month.end_of_week(:monday)
+  days = (start_date..end_date).to_a
+  weeks = days.each_slice(7).to_a
+%>
+
+<div class="max-w-5xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-3">
+      <%= link_to appointments_path(month: @month - 1, year: @month == 1 ? @year - 1 : @year), class: "p-2 text-gray-400 hover:text-gray-600 transition" do %>
+        <%= lucide_icon "chevron-left", class: "w-5 h-5" %>
+      <% end %>
+      <h1 class="text-2xl font-bold text-gray-900"><%= t("date.month_names")[@month] %> <%= @year %></h1>
+      <%= link_to appointments_path(month: @month + 1, year: @month == 12 ? @year + 1 : @year), class: "p-2 text-gray-400 hover:text-gray-600 transition" do %>
+        <%= lucide_icon "chevron-right", class: "w-5 h-5" %>
+      <% end %>
+    </div>
+    <%= link_to new_appointment_path, class: "inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" do %>
+      <%= lucide_icon "plus", class: "w-4 h-4" %> Janji Baru
+    <% end %>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50">
+      <% %w[Sen Sel Rab Kam Jum Sab Min].each do |day| %>
+        <div class="px-3 py-2 text-xs font-medium text-gray-500 text-center"><%= day %></div>
+      <% end %>
+    </div>
+
+    <% weeks.each do |week| %>
+      <div class="grid grid-cols-7 border-b border-gray-100 last:border-b-0">
+        <% week.each do |day| %>
+          <div class="min-h-24 px-2 py-2 border-r border-gray-100 last:border-r-0 <%= day.month == @month ? '' : 'bg-gray-50' %>">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-medium <%= day == Date.current ? 'bg-teal-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : day.month == @month ? 'text-gray-900' : 'text-gray-400' %>">
+                <%= day.day %>
+              </span>
+              <%= link_to new_appointment_path(date: day), class: "text-gray-300 hover:text-teal-600 transition" do %>
+                <%= lucide_icon "plus", class: "w-3 h-3" %>
+              <% end %>
+            </div>
+            <div class="space-y-1">
+              <% @appointments.select { |a| a.appointment_date.to_date == day }.each do |apt| %>
+                <%= link_to edit_appointment_path(apt), class: "block px-1.5 py-0.5 rounded text-xs truncate #{apt.status == 'cancelled' ? 'bg-red-50 text-red-600 line-through' : apt.status == 'completed' ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}" do %>
+                  <%= apt.appointment_date.strftime("%H:%M") %> <%= apt.patient.name.split.first %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

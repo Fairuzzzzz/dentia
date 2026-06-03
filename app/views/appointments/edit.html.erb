@@ -1,0 +1,28 @@
+<div class="max-w-5xl mx-auto">
+  <div class="flex items-center gap-3 mb-6">
+    <%= link_to appointments_path, class: "p-1.5 text-gray-400 hover:text-gray-600 transition" do %>
+      <%= lucide_icon "arrow-left", class: "w-5 h-5" %>
+    <% end %>
+    <div class="flex-1">
+      <h1 class="text-2xl font-bold text-gray-900">Edit Janji Temu</h1>
+      <p class="text-sm text-gray-500"><%= @appointment.patient.name %> — <%= @appointment.appointment_date.strftime("%d %B %Y %H:%M") %></p>
+    </div>
+    <div class="flex items-center gap-2">
+      <% if @appointment.status == "scheduled" || @appointment.status == "confirmed" %>
+        <%= button_to update_status_appointment_path(@appointment, status: "completed"), method: :patch, class: "px-3 py-1.5 text-xs font-medium bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition" do %>
+          Selesai
+        <% end %>
+        <%= button_to update_status_appointment_path(@appointment, status: "cancelled"), method: :patch, class: "px-3 py-1.5 text-xs font-medium bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition" do %>
+          Batal
+        <% end %>
+      <% end %>
+      <%= button_to @appointment, method: :delete, data: { turbo_confirm: "Hapus janji temu ini?" }, class: "p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" do %>
+        <%= lucide_icon "trash-2", class: "w-4 h-4" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <%= render "form" %>
+  </div>
+</div>
