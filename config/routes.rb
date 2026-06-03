@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :visits do
     member do
       patch :update_status
+      get :print_prescription
     end
   end
 
@@ -27,6 +28,13 @@ Rails.application.routes.draw do
 
     member do
       patch :update_status
+    end
+  end
+
+  resources :reports, only: :index do
+    collection do
+      get :export_pdf
+      get :export_excel
     end
   end
 
