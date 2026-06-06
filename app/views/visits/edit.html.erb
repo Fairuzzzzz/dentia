@@ -273,7 +273,7 @@
                     <div class="nested-field-wrapper grid grid-cols-5 gap-2 mb-2 items-end">
                       <div>
                         <%= pt.label :treatment_catalog_id, "Tindakan", class: "block text-xs font-medium text-gray-600 mb-1" %>
-                        <%= pt.collection_select :treatment_catalog_id, TreatmentCatalog.active.order(:name), :id, :name, { prompt: "Pilih" }, class: "w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+                        <%= pt.collection_select :treatment_catalog_id, current_user.treatment_catalogs.active.order(:name), :id, :name, { prompt: "Pilih" }, class: "w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
                       </div>
                       <div>
                         <%= pt.label :tooth_number, "Gigi No.", class: "block text-xs font-medium text-gray-600 mb-1" %>
@@ -306,7 +306,7 @@
                     <div class="nested-field-wrapper grid grid-cols-5 gap-2 mb-2 items-end">
                       <div>
                         <%= pt.label :treatment_catalog_id, "Tindakan", class: "block text-xs font-medium text-gray-600 mb-1" %>
-                        <%= pt.collection_select :treatment_catalog_id, TreatmentCatalog.active.order(:name), :id, :name, { prompt: "Pilih" }, class: "w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+                        <%= pt.collection_select :treatment_catalog_id, current_user.treatment_catalogs.active.order(:name), :id, :name, { prompt: "Pilih" }, class: "w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
                       </div>
                       <div>
                         <%= pt.label :tooth_number, "Gigi No.", class: "block text-xs font-medium text-gray-600 mb-1" %>

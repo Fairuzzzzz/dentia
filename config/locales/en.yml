@@ -1,31 +1,280 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  activerecord:
+    models:
+      patient: Patient
+      visit: Visit
+      treatment_catalog: Treatment Catalog
+      appointment: Appointment
+      billing: Billing
+    attributes:
+      patient:
+        name: Name
+        nik: NIK
+        birth_date: Date of Birth
+        gender: Gender
+        phone: Phone
+        address: Address
+        blood_type: Blood Type
+        allergies: Allergies
+        patient_number: Medical Record No.
+      visit:
+        visit_number: Visit No.
+        visit_date: Visit Date
+        chief_complaint: Chief Complaint
+        status: Status
+      treatment_catalog:
+        code: Code
+        name: Treatment Name
+        category: Category
+        is_active: Active Status
+      appointment:
+        appointment_date: Date & Time
+        purpose: Purpose
+        notes: Notes
+        status: Status
+      billing:
+        total_amount: Total
+        payment_method: Payment Method
+        payment_status: Payment Status
+      user:
+        name: Doctor Name
+        email: Email
+        sip_number: License No.
+        clinic_name: Clinic Name
+        clinic_address: Clinic Address
+        clinic_phone: Clinic Phone
+
+  sidebar:
+    dashboard: Dashboard
+    patients: Patients
+    visits: Visits
+    appointments: Schedule
+    billings: Billing
+    reports: Reports
+    treatment_catalog: Treatment Catalog
+    settings: Settings
+    settings_title: Settings
+    doctor_profile: Doctor Profile
+    logout: Logout
+    clinic: Dental Clinic
+
+  dashboard:
+    title: Dashboard
+    today_visits: "Today's Visits"
+    new_patients: New Patients This Month
+    today_appointments: "Today's Appointments"
+    today_revenue: "Today's Revenue"
+    chart_title: Visits - Last 7 Days
+    quick_actions: Quick Actions
+    new_patient: New Patient
+    new_visit: New Visit
+    register_patient: Register new patient
+    create_visit: Create patient visit
+    view_all: View All
+    no_visits: No visits today
+    no_appointments: No upcoming appointments
+
+  patients:
+    title: Patients
+    new: New Patient
+    edit: Edit Patient
+    details: Patient Details
+    history: Visit History
+    search_placeholder: Search name, NIK, or phone...
+    empty: No patients yet
+    no_results: No patients found with keyword
+    add_first: Add first patient
+    confirm_delete: Are you sure you want to delete
+    flash:
+      created: Patient successfully added
+      updated: Patient data successfully updated
+      deleted: Patient successfully deleted
+    form:
+      patient_number: Medical Record No.
+      auto_generate: Auto-generated
+      full_name: Full Name
+      select_gender: Select
+      male: Male
+      female: Female
+      select_blood: Select
+      phone_placeholder: "0812xxxx"
+      address_placeholder: Full address
+      allergies_placeholder: Drug/food allergies (if any)
+
+  visits:
+    title: Visits
+    new: New Visit
+    edit: Edit Visit
+    search_placeholder: Search patient / visit no...
+    empty: No visits yet
+    filter: Filter
+    all_status: All Status
+    no_results: No visits found
+    add_first: Create new visit
+    start_exam: Start Exam
+    finish: Complete
+    table:
+      visit_number: Visit No.
+      patient: Patient
+      date: Date
+      complaint: Complaint
+      status: Status
+      actions: Actions
+    flash:
+      created: Visit successfully created
+      updated: Medical record saved
+      status_updated: Visit status updated
+    new_form:
+      select_patient: Select patient
+      or_register: Or register a new patient
+      chief_complaint_placeholder: Patient's chief complaint
+      create: Create Visit
+
+  treatment:
+    title: Treatment Catalog
+    new: Add Treatment
+    edit: Edit Treatment
+    new_title: Add New Treatment
+    edit_title: Edit Treatment
+    empty: No treatments yet
+    add_first: Add first treatment
+    confirm_delete: Are you sure you want to delete
+    flash:
+      created: Treatment successfully added
+      updated: Treatment successfully updated
+      deleted: Treatment successfully deleted
+    table:
+      code: Code
+      name: Treatment Name
+      category: Category
+      status: Status
+      actions: Actions
+    form:
+      code_placeholder: "GG-001"
+      name_placeholder: "Scaling (Ultrasonic)"
+      name_label: Treatment Name
+      select_category: Select category
+      active: Active
+    categories:
+      umum: General
+      bedah: Surgery
+      konservasi: Conservative
+      endodonti: Endodontics
+      periodonti: Periodontics
+      radiologi: Radiology
+
+  appointments:
+    title: Schedule
+    new: New Appointment
+    edit: Edit Appointment
+    flash:
+      created: Appointment successfully created
+      updated: Appointment successfully updated
+      deleted: Appointment successfully deleted
+      status_updated: Status updated
+
+  billings:
+    title: Billing
+    details: Billing Details
+    mark_paid: Mark as Paid
+    print_invoice: Print Invoice
+    flash:
+      paid: Payment recorded successfully
+      paid_error: Failed to record payment
+    table:
+      date: Date
+      patient: Patient
+      visit: Visit
+      total: Total
+      status: Status
+      payment: Payment
+      actions: Actions
+    status:
+      paid: Paid
+      unpaid: Unpaid
+
+  reports:
+    title: Reports
+    from: From
+    to: To
+    show: Show
+    pdf: PDF
+    excel: Excel
+    summary: Summary
+    total_visits: Total Visits
+    new_patients: New Patients
+    revenue_paid: Paid Revenue
+    revenue_unpaid: Unpaid
+    daily_visits: Daily Visits
+    top_treatments: Top 10 Treatments
+    financial_summary: Financial Summary
+
+  common:
+    save: Save
+    cancel: Cancel
+    edit: Edit
+    delete: Delete
+    back: Back
+    search: Search
+    filter: Filter
+    confirm_delete: Are you sure?
+    actions: Actions
+    status: Status
+    active: Active
+    inactive: Inactive
+    yes: Yes
+    no: No
+    add: Add
+    print: Print
+    time: Time
+
+  status:
+    registered: Registered
+    in_progress: In Progress
+    completed: Completed
+    scheduled: Scheduled
+    confirmed: Confirmed
+    cancelled: Cancelled
+    no_show: No Show
+    paid: Paid
+    unpaid: Unpaid
+
+  auth:
+    login: Sign In
+    logout: Sign Out
+    email: Email
+    password: Password
+    sign_in: Sign In
+    remember_me: Remember Me
+    forgot_password: Forgot Password?
+
+  settings:
+    title: Settings
+    appearance: Appearance
+    dark_mode: Dark Mode
+    language: Language
+    doctor_profile: Doctor Profile
+    edit_profile: Edit Profile
+    flash_updated: Settings saved
+    profile_updated: Profile updated
+    change_password: Change Password
+    password_description: Password is used to sign in to your account.
+    current_password: Current Password
+    new_password: New Password
+    password_placeholder: Leave blank if you don't want to change
+    confirm_password: Confirm New Password
+    password_button: Change Password
+    delete_account: Delete Account
+    delete_account_description: After deleting your account, all data cannot be recovered.
+    delete_account_button: Delete My Account
+    delete_confirm: Are you sure you want to delete your account? All data will be permanently lost!
+
+  date:
+    formats:
+      default: "%m/%d/%Y"
+      long: "%B %d, %Y"
+      short: "%b %d"
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]

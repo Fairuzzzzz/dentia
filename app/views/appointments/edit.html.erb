@@ -4,7 +4,7 @@
       <%= lucide_icon "arrow-left", class: "w-5 h-5" %>
     <% end %>
     <div class="flex-1">
-      <h1 class="text-2xl font-bold text-gray-900">Edit Janji Temu</h1>
+      <h1 class="text-2xl font-bold text-gray-900"><%= t("appointments.edit") %></h1>
       <p class="text-sm text-gray-500"><%= @appointment.patient.name %> — <%= @appointment.appointment_date.strftime("%d %B %Y %H:%M") %></p>
     </div>
     <div class="flex items-center gap-2">

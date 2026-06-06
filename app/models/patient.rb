@@ -2,12 +2,14 @@ class Patient < ApplicationRecord
   include Discard::Model
   default_scope -> { kept }
 
+  belongs_to :user
+
   has_many :visits, dependent: :destroy
   has_many :medical_records, through: :visits
   has_many :appointments, dependent: :destroy
 
   validates :name, presence: true
-  validates :nik, uniqueness: true, allow_blank: true
+  validates :nik, uniqueness: { scope: :user_id }, allow_blank: true
 
   scope :search_by, ->(query) {
     where("name ILIKE :q OR nik ILIKE :q OR phone ILIKE :q", q: "%#{query}%")

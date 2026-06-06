@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users/registrations" }
   root "dashboard#index"
   get "dashboard", to: "dashboard#index", as: :dashboard
 
@@ -25,7 +25,6 @@ Rails.application.routes.draw do
     collection do
       get :calendar
     end
-
     member do
       patch :update_status
     end
@@ -37,6 +36,12 @@ Rails.application.routes.draw do
       get :export_excel
     end
   end
+
+  namespace :settings do
+    resource :preferences, only: [:show, :update]
+  end
+
+  resource :profile, only: [:edit, :update]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

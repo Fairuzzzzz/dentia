@@ -3,10 +3,10 @@
     <%= link_to patients_path, class: "p-1.5 text-gray-400 hover:text-gray-600 transition" do %>
       <%= lucide_icon "arrow-left", class: "w-5 h-5" %>
     <% end %>
-    <h1 class="text-2xl font-bold text-gray-900">Detail Pasien</h1>
+    <h1 class="text-2xl font-bold text-gray-900"><%= t("patients.details") %></h1>
     <div class="ml-auto flex items-center gap-2">
       <%= link_to edit_patient_path(@patient), class: "inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition text-sm font-medium" do %>
-        <%= lucide_icon "pencil", class: "w-4 h-4" %> Edit
+        <%= lucide_icon "pencil", class: "w-4 h-4" %> <%= t("common.edit") %>
       <% end %>
     </div>
   </div>
@@ -14,21 +14,21 @@
   <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
     <h2 class="text-lg font-semibold text-gray-900 mb-4">Data Pasien</h2>
     <div class="grid grid-cols-2 gap-4 text-sm">
-      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0">No. RM</span><span class="font-mono text-gray-900"><%= @patient.patient_number %></span></div>
-      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0">NIK</span><span class="text-gray-900"><%= @patient.nik || "-" %></span></div>
-      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0">Nama</span><span class="text-gray-900 font-medium"><%= @patient.name %></span></div>
-      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0">Jenis Kelamin</span><span class="text-gray-900"><%= @patient.gender == "male" ? "Laki-laki" : @patient.gender == "female" ? "Perempuan" : "-" %></span></div>
-      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0">Tanggal Lahir</span><span class="text-gray-900"><%= @patient.birth_date&.strftime("%d/%m/%Y") || "-" %></span></div>
-      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0">Gol. Darah</span><span class="text-gray-900"><%= @patient.blood_type || "-" %></span></div>
-      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0">Telepon</span><span class="text-gray-900"><%= @patient.phone || "-" %></span></div>
-      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0">Alamat</span><span class="text-gray-900"><%= @patient.address.presence || "-" %></span></div>
-      <div class="flex gap-2 col-span-2"><span class="w-32 text-gray-500 shrink-0">Alergi</span><span class="text-gray-900"><%= @patient.allergies.presence || "-" %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0"><%= t("activerecord.attributes.patient.patient_number") %></span><span class="font-mono text-gray-900"><%= @patient.patient_number %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0"><%= t("activerecord.attributes.patient.nik") %></span><span class="text-gray-900"><%= @patient.nik || "-" %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0"><%= t("activerecord.attributes.patient.name") %></span><span class="text-gray-900 font-medium"><%= @patient.name %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0"><%= t("activerecord.attributes.patient.gender") %></span><span class="text-gray-900"><%= @patient.gender == "male" ? t("patients.form.male") : @patient.gender == "female" ? t("patients.form.female") : "-" %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0"><%= t("activerecord.attributes.patient.birth_date") %></span><span class="text-gray-900"><%= @patient.birth_date&.strftime("%d/%m/%Y") || "-" %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0"><%= t("activerecord.attributes.patient.blood_type") %></span><span class="text-gray-900"><%= @patient.blood_type || "-" %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0"><%= t("activerecord.attributes.patient.phone") %></span><span class="text-gray-900"><%= @patient.phone || "-" %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500 shrink-0"><%= t("activerecord.attributes.patient.address") %></span><span class="text-gray-900"><%= @patient.address.presence || "-" %></span></div>
+      <div class="flex gap-2 col-span-2"><span class="w-32 text-gray-500 shrink-0"><%= t("activerecord.attributes.patient.allergies") %></span><span class="text-gray-900"><%= @patient.allergies.presence || "-" %></span></div>
     </div>
   </div>
 
   <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
     <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
-      <h2 class="text-sm font-semibold text-gray-700">Riwayat Kunjungan</h2>
+      <h2 class="text-sm font-semibold text-gray-700"><%= t("patients.history") %></h2>
     </div>
     <table class="w-full">
       <thead>

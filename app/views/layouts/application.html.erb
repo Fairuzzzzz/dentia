@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script>
+      if (localStorage.getItem("darkMode") === "true") {
+        document.documentElement.classList.add("dark")
+      }
+    </script>
     <title><%= content_for(:title) || "Dentia" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
@@ -9,7 +14,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-gray-50">
+  <body class="bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
     <% if user_signed_in? %>
       <div class="flex h-screen">
         <%= render "shared/sidebar" %>

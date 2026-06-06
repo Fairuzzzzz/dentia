@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_01_233458) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_06_093500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -132,16 +132,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_233458) do
     t.date "birth_date"
     t.string "blood_type"
     t.datetime "created_at", null: false
-    t.datetime "discraded_at"
+    t.datetime "discarded_at"
     t.string "gender"
     t.string "name", null: false
     t.string "nik"
     t.string "patient_number"
     t.string "phone"
     t.datetime "updated_at", null: false
-    t.index ["discraded_at"], name: "index_patients_on_discraded_at"
+    t.uuid "user_id"
+    t.index ["discarded_at"], name: "index_patients_on_discraded_at"
     t.index ["nik"], name: "index_patients_on_nik", unique: true
-    t.index ["patient_number"], name: "index_patients_on_patient_number", unique: true
+    t.index ["user_id", "patient_number"], name: "index_patients_on_user_id_and_patient_number", unique: true
+    t.index ["user_id"], name: "index_patients_on_user_id"
   end
 
   create_table "plan_treatments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -194,7 +196,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_233458) do
     t.boolean "is_active", default: true
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_id"
     t.index ["code"], name: "index_treatment_catalogs_on_code", unique: true
+    t.index ["user_id"], name: "index_treatment_catalogs_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -236,10 +240,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_233458) do
   add_foreign_key "medical_records", "visits"
   add_foreign_key "objective_examinations", "medical_records"
   add_foreign_key "odontograms", "objective_examinations"
+  add_foreign_key "patients", "users"
   add_foreign_key "plan_treatments", "plans"
   add_foreign_key "plan_treatments", "treatment_catalogs"
   add_foreign_key "plans", "medical_records"
   add_foreign_key "prescriptions", "plans"
   add_foreign_key "subjective_examinations", "medical_records"
+  add_foreign_key "treatment_catalogs", "users"
   add_foreign_key "visits", "patients"
 end

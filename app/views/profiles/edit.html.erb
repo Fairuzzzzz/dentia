@@ -1,0 +1,92 @@
+<div class="max-w-4xl mx-auto">
+  <div class="flex items-center gap-3 mb-6">
+    <%= link_to edit_profile_path, class: "p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+    <% end %>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white"><%= t("settings.edit_profile") %></h1>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <%= form_with model: @user, url: profile_path, method: :patch, class: "space-y-4" do |f| %>
+      <% if @user.errors.any? %>
+        <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-400">
+          <ul class="list-disc pl-4 space-y-1">
+            <% @user.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= f.label :name, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+          <%= f.text_field :name, class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Dr. ..." %>
+        </div>
+        <div>
+          <%= f.label :sip_number, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+          <%= f.text_field :sip_number, class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Nomor SIP" %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.label :clinic_name, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+        <%= f.text_field :clinic_name, class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Klinik Gigi ..." %>
+      </div>
+
+      <div>
+        <%= f.label :clinic_address, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+        <%= f.text_area :clinic_address, rows: 2, class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Jl. ..." %>
+      </div>
+
+      <div>
+        <%= f.label :clinic_phone, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+        <%= f.text_field :clinic_phone, class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "0812xxxx" %>
+      </div>
+
+      <div class="flex items-center gap-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+        <%= f.submit t("common.save"), class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" %>
+        <%= link_to t("common.cancel"), edit_profile_path, class: "px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition text-sm" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mt-6">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4"><%= t("settings.change_password") %></h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4"><%= t("settings.password_description") %></p>
+    <hr class="border-gray-200 dark:border-gray-700 mb-4">
+    <%= form_for(current_user, as: :user, url: registration_path(:user), html: { method: :put, class: "space-y-4" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: current_user %>
+      <%= f.hidden_field :name %>
+      <%= f.hidden_field :sip_number %>
+      <%= f.hidden_field :clinic_name %>
+      <%= f.hidden_field :clinic_address %>
+      <%= f.hidden_field :clinic_phone %>
+      <div>
+        <%= f.label :current_password, t("settings.current_password"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+        <%= f.password_field :current_password, autocomplete: "current-password", class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= f.label :password, t("settings.new_password"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+          <%= f.password_field :password, autocomplete: "new-password", class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: t("settings.password_placeholder") %>
+        </div>
+        <div>
+          <%= f.label :password_confirmation, t("settings.confirm_password"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+        </div>
+      </div>
+      <div>
+        <%= f.submit t("settings.password_button"), class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-red-200 dark:border-red-900 p-6 mt-6">
+    <h2 class="text-lg font-semibold text-red-600 dark:text-red-400 mb-2"><%= t("settings.delete_account") %></h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4"><%= t("settings.delete_account_description") %></p>
+    <%= button_to registration_path(:user), method: :delete, data: { turbo_confirm: t("settings.delete_confirm") }, class: "px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium" do %>
+      <%= t("settings.delete_account_button") %>
+    <% end %>
+  </div>
+</div>

@@ -1,9 +1,9 @@
 <div class="max-w-5xl mx-auto">
   <div class="flex items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-900">Katalog Tindakan</h1>
+    <h1 class="text-2xl font-bold text-gray-900"><%= t("treatment.title") %></h1>
     <div class="ml-auto -mr-6 bg-teal-600 rounded-lg px-4 py-2">
       <%= link_to new_treatment_catalog_path, class: "inline-flex items-center gap-2 text-white text-sm font-medium" do %>
-        <%= lucide_icon "plus", class: "w-4 h-4" %> Tambah
+        <%= lucide_icon "plus", class: "w-4 h-4" %> <%= t("common.add") %>
       <% end %>
     </div>
   </div>
@@ -11,11 +11,11 @@
     <table class="w-full">
       <thead>
         <tr class="bg-gray-50 border-b border-gray-200">
-          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Kode</th>
-          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Tindakan</th>
-          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
-          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-          <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("treatment.table.code") %></th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("treatment.table.name") %></th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("treatment.table.category") %></th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("treatment.table.status") %></th>
+          <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("treatment.table.actions") %></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-100">
@@ -26,9 +26,9 @@
             <td class="px-4 py-3 text-sm text-gray-600"><%= tc.category %></td>
             <td class="px-4 py-3">
               <% if tc.is_active? %>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Aktif</span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"><%= t("common.active") %></span>
               <% else %>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">Nonaktif</span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600"><%= t("common.inactive") %></span>
               <% end %>
             </td>
             <td class="px-4 py-3 text-right">
@@ -36,7 +36,7 @@
                 <%= link_to edit_treatment_catalog_path(tc), class: "p-1.5 text-gray-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition" do %>
                   <%= lucide_icon "pencil", class: "w-4 h-4" %>
                 <% end %>
-                <%= button_to treatment_catalog_path(tc), method: :delete, data: { turbo_confirm: "Yakin ingin menghapus #{tc.name}?" }, class: "p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" do %>
+                <%= button_to treatment_catalog_path(tc), method: :delete, data: { turbo_confirm: "#{t('treatment.confirm_delete')} #{tc.name}?" }, class: "p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" do %>
                   <%= lucide_icon "trash-2", class: "w-4 h-4" %>
                 <% end %>
               </div>
@@ -46,7 +46,7 @@
         <% if @treatment_catalogs.empty? %>
           <tr>
             <td colspan="5" class="px-4 py-12 text-center text-gray-400">
-              Belum ada treatment. <%= link_to "Tambah treatment pertama", new_treatment_catalog_path, class: "text-teal-600 hover:underline" %>
+              <%= t("treatment.empty") %>. <%= link_to t("treatment.add_first"), new_treatment_catalog_path, class: "text-teal-600 hover:underline" %>
             </td>
           </tr>
         <% end %>

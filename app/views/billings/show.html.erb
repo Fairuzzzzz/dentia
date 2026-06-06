@@ -3,21 +3,21 @@
     <%= link_to billings_path, class: "p-1.5 text-gray-400 hover:text-gray-600 transition" do %>
       <%= lucide_icon "arrow-left", class: "w-5 h-5" %>
     <% end %>
-    <h1 class="text-2xl font-bold text-gray-900">Detail Pembiayaan</h1>
+    <h1 class="text-2xl font-bold text-gray-900"><%= t("billings.details") %></h1>
   </div>
 
   <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
     <div class="grid grid-cols-2 gap-4 text-sm mb-4">
-      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0">No. Kunjungan</span><span class="font-mono text-gray-900"><%= @billing.visit.visit_number %></span></div>
-      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0">Status</span>
+      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0"><%= t("visits.table.visit_number") %></span><span class="font-mono text-gray-900"><%= @billing.visit.visit_number %></span></div>
+      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0"><%= t("billings.table.status") %></span>
         <% if @billing.paid? %>
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Lunas</span>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"><%= t("billings.status.paid") %></span>
         <% else %>
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Belum Dibayar</span>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800"><%= t("billings.status.unpaid") %></span>
         <% end %>
       </div>
-      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0">Pasien</span><span class="text-gray-900 font-medium"><%= @billing.visit.patient.name %></span></div>
-      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0">Tanggal</span><span class="text-gray-900"><%= @billing.created_at.strftime("%d %B %Y") %></span></div>
+      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0"><%= t("visits.table.patient") %></span><span class="text-gray-900 font-medium"><%= @billing.visit.patient.name %></span></div>
+      <div class="flex gap-2"><span class="w-28 text-gray-500 shrink-0"><%= t("billings.table.date") %></span><span class="text-gray-900"><%= @billing.created_at.strftime("%d %B %Y") %></span></div>
     </div>
 
     <table class="w-full mb-4">
@@ -61,13 +61,13 @@
 
   <% unless @billing.paid? %>
     <div class="bg-white rounded-xl border border-gray-200 p-6">
-      <h2 class="text-lg font-bold text-gray-900 mb-4">Catat Pembayaran</h2>
+      <h2 class="text-lg font-bold text-gray-900 mb-4"><%= t("billings.mark_paid") %></h2>
       <%= form_tag mark_as_paid_billing_path(@billing), method: :patch, class: "flex items-end gap-3" do %>
         <div>
           <%= label_tag :payment_method, "Metode Pembayaran", class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= select_tag :payment_method, options_for_select([["Cash", "cash"], ["Transfer Bank", "transfer"], ["BPJS", "bpjs"], ["Asuransi", "insurance"]]), prompt: "Pilih metode", class: "w-48 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
         </div>
-        <%= submit_tag "Tandai Lunas", class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" %>
+        <%= submit_tag t("billings.mark_paid"), class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" %>
       <% end %>
     </div>
   <% end %>

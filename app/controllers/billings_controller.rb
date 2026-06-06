@@ -4,7 +4,7 @@ class BillingsController < ApplicationController
   before_action :set_billing, only: [ :show, :mark_as_paid, :print_invoice ]
 
   def index
-    @billings = Billing.includes(visit: :patient).order(created_at: :desc)
+    @billings = Billing.joins(visit: :patient).where(patients: { user_id: current_user.id }).includes(visit: :patient).order(created_at: :desc)
 
     if params[:status].present?
       @billings = @billings.where(payment_status: params[:status])
@@ -20,12 +20,14 @@ class BillingsController < ApplicationController
 
   def mark_as_paid
     if @billing.update(payment_status: "paid", paid_at: Time.current, payment_method: params[:payment_method])
-      redirect_to @billing, notice: "Pembayaran berhasil dicatat"
+      redirect_to @billing, notice: t("billings.flash.paid")
+    else
+      redirect_to @billing, alert: t("billings.flash.paid_error")
     end
   end
 
   def print_invoice
-    @billing = Billing.includes(visit: { patient: nil }, billing_items: :plan_treatment).find(params[:id])
+    @billing = Billing.joins(visit: :patient).where(patients: { user_id: current_user.id }).includes(visit: { patient: nil }, billing_items: :plan_treatment).find(params[:id])
     @doctor = current_user
     pdf = Prawn::Document.new(page_size: "A4", margin: [ 40, 40, 40, 40 ])
 
@@ -83,6 +85,6 @@ class BillingsController < ApplicationController
   private
 
   def set_billing
-    @billing = Billing.includes(visit: { patient: nil }, billing_items: :plan_treatment).find(params[:id])
+    @billing = Billing.joins(visit: :patient).where(patients: { user_id: current_user.id }).includes(visit: { patient: nil }, billing_items: :plan_treatment).find(params[:id])
   end
 end

@@ -1,22 +1,22 @@
 <div class="max-w-4xl mx-auto">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Laporan</h1>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6"><%= t("reports.title") %></h1>
 
   <%= form_tag reports_path, method: :get, class: "bg-white rounded-xl border border-gray-200 p-4 mb-6" do %>
     <div class="flex items-end gap-3">
       <div>
-        <%= label_tag :start_date, "Dari", class: "block text-xs font-medium text-gray-600 mb-1" %>
+        <%= label_tag :start_date, t("reports.from"), class: "block text-xs font-medium text-gray-600 mb-1" %>
         <%= date_field_tag :start_date, @start_date, class: "px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
       </div>
       <div>
-        <%= label_tag :end_date, "Sampai", class: "block text-xs font-medium text-gray-600 mb-1" %>
+        <%= label_tag :end_date, t("reports.to"), class: "block text-xs font-medium text-gray-600 mb-1" %>
         <%= date_field_tag :end_date, @end_date, class: "px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
       </div>
-      <%= submit_tag "Tampilkan", class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium cursor-pointer" %>
+      <%= submit_tag t("reports.show"), class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium cursor-pointer" %>
       <%= link_to export_pdf_reports_path(start_date: @start_date, end_date: @end_date), class: "px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-sm font-medium inline-flex items-center gap-1" do %>
-        <%= lucide_icon "file-text", class: "w-4 h-4" %> PDF
+        <%= lucide_icon "file-text", class: "w-4 h-4" %> <%= t("reports.pdf") %>
       <% end %>
       <%= link_to export_excel_reports_path(start_date: @start_date, end_date: @end_date), class: "px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium inline-flex items-center gap-1" do %>
-        <%= lucide_icon "file-spreadsheet", class: "w-4 h-4" %> Excel
+        <%= lucide_icon "file-spreadsheet", class: "w-4 h-4" %> <%= t("reports.excel") %>
       <% end %>
     </div>
   <% end %>
@@ -29,7 +29,7 @@
         </div>
         <div>
           <p class="text-2xl font-bold text-gray-900"><%= @total_visits %></p>
-          <p class="text-xs text-gray-500">Total Kunjungan</p>
+          <p class="text-xs text-gray-500"><%= t("reports.total_visits") %></p>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@
         </div>
         <div>
           <p class="text-2xl font-bold text-gray-900"><%= @new_patients %></p>
-          <p class="text-xs text-gray-500">Pasien Baru</p>
+          <p class="text-xs text-gray-500"><%= t("reports.new_patients") %></p>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
         </div>
         <div>
           <p class="text-2xl font-bold text-gray-900"><%= number_to_currency(@total_revenue, unit: "Rp ", separator: ",", delimiter: ".") %></p>
-          <p class="text-xs text-gray-500">Pendapatan Lunas</p>
+          <p class="text-xs text-gray-500"><%= t("reports.revenue_paid") %></p>
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
 
   <div class="grid grid-cols-2 gap-4 mb-6">
     <div class="bg-white rounded-xl border border-gray-200 p-4">
-      <h2 class="text-sm font-semibold text-gray-700 mb-4">Kunjungan per Hari</h2>
+      <h2 class="text-sm font-semibold text-gray-700 mb-4"><%= t("reports.daily_visits") %></h2>
       <div class="flex items-end gap-2 h-32">
         <% @visits_by_day.each do |date, count| %>
           <div class="flex-1 flex flex-col items-center gap-1">
@@ -73,7 +73,7 @@
     </div>
 
     <div class="bg-white rounded-xl border border-gray-200 p-4">
-      <h2 class="text-sm font-semibold text-gray-700 mb-4">10 Tindakan Terbanyak</h2>
+      <h2 class="text-sm font-semibold text-gray-700 mb-4"><%= t("reports.top_treatments") %></h2>
       <div class="space-y-2">
         <% @top_treatments.each_with_index do |(name, count), i| %>
           <div class="flex items-center gap-2">
@@ -91,10 +91,10 @@
   </div>
 
   <div class="bg-white rounded-xl border border-gray-200 p-4 mb-6">
-    <h2 class="text-sm font-semibold text-gray-700 mb-2">Ringkasan Keuangan</h2>
+    <h2 class="text-sm font-semibold text-gray-700 mb-2"><%= t("reports.financial_summary") %></h2>
     <div class="grid grid-cols-2 gap-4 text-sm">
-      <div class="flex gap-2"><span class="w-32 text-gray-500">Pendapatan Lunas</span><span class="font-medium text-gray-900"><%= number_to_currency(@total_revenue, unit: "Rp ", separator: ",", delimiter: ".") %></span></div>
-      <div class="flex gap-2"><span class="w-32 text-gray-500">Belum Dibayar</span><span class="font-medium text-red-600"><%= number_to_currency(@unpaid_revenue, unit: "Rp ", separator: ",", delimiter: ".") %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500"><%= t("reports.revenue_paid") %></span><span class="font-medium text-gray-900"><%= number_to_currency(@total_revenue, unit: "Rp ", separator: ",", delimiter: ".") %></span></div>
+      <div class="flex gap-2"><span class="w-32 text-gray-500"><%= t("reports.revenue_unpaid") %></span><span class="font-medium text-red-600"><%= number_to_currency(@unpaid_revenue, unit: "Rp ", separator: ",", delimiter: ".") %></span></div>
     </div>
   </div>
 </div>

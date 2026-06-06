@@ -20,9 +20,9 @@ class Visit < ApplicationRecord
   private
 
   def generate_visit_number
-    last_number = Visit.maximum(:visit_number)
+    last_number = Visit.joins(:patient).where(patients: { user_id: patient.user_id }).maximum(:visit_number)
     seq = last_number.to_s.split("-").last.to_i + 1
-    self.visit_number ="KNJ-#{Time.current.strftime("%Y%m")}-#{seq.to_s.rjust(4, "0")}"
+    self.visit_number = "KNJ-#{Time.current.strftime("%Y%m")}-#{seq.to_s.rjust(4, "0")}"
   end
 
   def build_medical_record_components

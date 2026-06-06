@@ -1,0 +1,280 @@
+id:
+  activerecord:
+    models:
+      patient: Pasien
+      visit: Kunjungan
+      treatment_catalog: Katalog Tindakan
+      appointment: Janji Temu
+      billing: Pembiayaan
+    attributes:
+      patient:
+        name: Nama
+        nik: NIK
+        birth_date: Tanggal Lahir
+        gender: Jenis Kelamin
+        phone: Telepon
+        address: Alamat
+        blood_type: Golongan Darah
+        allergies: Alergi
+        patient_number: No. RM
+      visit:
+        visit_number: No. Kunjungan
+        visit_date: Tanggal Kunjungan
+        chief_complaint: Keluhan Utama
+        status: Status
+      treatment_catalog:
+        code: Kode
+        name: Nama Tindakan
+        category: Kategori
+        is_active: Status Aktif
+      appointment:
+        appointment_date: Tanggal & Jam
+        purpose: Keperluan
+        notes: Catatan
+        status: Status
+      billing:
+        total_amount: Total
+        payment_method: Metode Pembayaran
+        payment_status: Status Pembayaran
+      user:
+        name: Nama Dokter
+        email: Email
+        sip_number: No. SIP
+        clinic_name: Nama Klinik
+        clinic_address: Alamat Klinik
+        clinic_phone: Telepon Klinik
+
+  sidebar:
+    dashboard: Dashboard
+    patients: Pasien
+    visits: Kunjungan
+    appointments: Jadwal
+    billings: Pembiayaan
+    reports: Laporan
+    treatment_catalog: Katalog Tindakan
+    settings: Settings
+    settings_title: Pengaturan
+    doctor_profile: Profil Dokter
+    logout: Keluar
+    clinic: Klinik Gigi
+
+  dashboard:
+    title: Dashboard
+    today_visits: Kunjungan Hari Ini
+    new_patients: Pasien Baru Bulan Ini
+    today_appointments: Janji Temu Hari Ini
+    today_revenue: Pendapatan Hari Ini
+    chart_title: Kunjungan 7 Hari Terakhir
+    quick_actions: Tindakan Cepat
+    new_patient: Pasien Baru
+    new_visit: Kunjungan Baru
+    register_patient: Daftarkan pasien baru
+    create_visit: Buat kunjungan pasien
+    view_all: Lihat Semua
+    no_visits: Belum ada kunjungan hari ini
+    no_appointments: Tidak ada janji temu mendatang
+
+  patients:
+    title: Pasien
+    new: Pasien Baru
+    edit: Edit Pasien
+    details: Detail Pasien
+    history: Riwayat Kunjungan
+    search_placeholder: Cari nama, NIK, atau telepon...
+    empty: Belum ada pasien
+    no_results: Tidak ada pasien dengan kata kunci
+    add_first: Tambah pasien pertama
+    confirm_delete: Yakin ingin menghapus
+    flash:
+      created: Pasien berhasil ditambahkan
+      updated: Data pasien berhasil diperbarui
+      deleted: Pasien berhasil dihapus
+    form:
+      patient_number: No. Rekam Medis
+      auto_generate: Otomatis
+      full_name: Nama Lengkap
+      select_gender: Pilih
+      male: Laki-laki
+      female: Perempuan
+      select_blood: Pilih
+      phone_placeholder: "0812xxxx"
+      address_placeholder: Alamat lengkap
+      allergies_placeholder: Alergi obat / makanan (jika ada)
+
+  visits:
+    title: Kunjungan
+    new: Kunjungan Baru
+    edit: Edit Kunjungan
+    search_placeholder: Cari pasien / no. kunjungan...
+    empty: Belum ada kunjungan
+    filter: Filter
+    all_status: Semua Status
+    no_results: Tidak ada kunjungan
+    add_first: Buat kunjungan baru
+    start_exam: Mulai Periksa
+    finish: Selesai
+    table:
+      visit_number: No. Kunjungan
+      patient: Pasien
+      date: Tanggal
+      complaint: Keluhan
+      status: Status
+      actions: Aksi
+    flash:
+      created: Kunjungan berhasil dibuat
+      updated: Rekam medis berhasil disimpan
+      status_updated: Status kunjungan berhasil diperbarui
+    new_form:
+      select_patient: Pilih pasien
+      or_register: Atau daftarkan pasien baru
+      chief_complaint_placeholder: Keluhan utama pasien
+      create: Buat Kunjungan
+
+  treatment:
+    title: Katalog Tindakan
+    new: Tambah Treatment
+    edit: Edit Treatment
+    new_title: Tambah Treatment Baru
+    edit_title: Edit Treatment
+    empty: Belum ada treatment
+    add_first: Tambah treatment pertama
+    confirm_delete: Yakin ingin menghapus
+    flash:
+      created: Treatment berhasil ditambahkan
+      updated: Treatment berhasil diperbarui
+      deleted: Treatment berhasil dihapus
+    table:
+      code: Kode
+      name: Nama Tindakan
+      category: Kategori
+      status: Status
+      actions: Aksi
+    form:
+      code_placeholder: "GG-001"
+      name_placeholder: "Scaling (Ultrasonic)"
+      name_label: Nama Tindakan
+      select_category: Pilih kategori
+      active: Aktif
+    categories:
+      umum: Umum
+      bedah: Bedah
+      konservasi: Konservasi
+      endodonti: Endodonti
+      periodonti: Periodonti
+      radiologi: Radiologi
+
+  appointments:
+    title: Jadwal
+    new: Janji Baru
+    edit: Edit Janji Temu
+    flash:
+      created: Janji temu berhasil dibuat
+      updated: Janji temu berhasil diperbarui
+      deleted: Janji temu berhasil dihapus
+      status_updated: Status berhasil diperbarui
+
+  billings:
+    title: Pembiayaan
+    details: Detail Pembiayaan
+    mark_paid: Tandai Lunas
+    print_invoice: Cetak Invoice
+    flash:
+      paid: Pembayaran berhasil dicatat
+      paid_error: Gagal mencatat pembayaran
+    table:
+      date: Tanggal
+      patient: Pasien
+      visit: Kunjungan
+      total: Total
+      status: Status
+      payment: Pembayaran
+      actions: Aksi
+    status:
+      paid: Lunas
+      unpaid: Belum Dibayar
+
+  reports:
+    title: Laporan
+    from: Dari
+    to: Sampai
+    show: Tampilkan
+    pdf: PDF
+    excel: Excel
+    summary: Ringkasan
+    total_visits: Total Kunjungan
+    new_patients: Pasien Baru
+    revenue_paid: Pendapatan Lunas
+    revenue_unpaid: Belum Dibayar
+    daily_visits: Kunjungan per Hari
+    top_treatments: 10 Tindakan Terbanyak
+    financial_summary: Ringkasan Keuangan
+
+  common:
+    save: Simpan
+    cancel: Batal
+    edit: Edit
+    delete: Hapus
+    back: Kembali
+    search: Cari
+    filter: Filter
+    confirm_delete: Yakin ingin menghapus?
+    actions: Aksi
+    status: Status
+    active: Aktif
+    inactive: Nonaktif
+    yes: Ya
+    no: Tidak
+    add: Tambah
+    print: Cetak
+    time: Jam
+
+  status:
+    registered: Terdaftar
+    in_progress: Diperiksa
+    completed: Selesai
+    scheduled: Terjadwal
+    confirmed: Dikonfirmasi
+    cancelled: Dibatalkan
+    no_show: Tidak Hadir
+    paid: Lunas
+    unpaid: Belum Dibayar
+
+  auth:
+    login: Masuk
+    logout: Keluar
+    email: Email
+    password: Kata Sandi
+    sign_in: Masuk
+    remember_me: Ingat Saya
+    forgot_password: Lupa Kata Sandi?
+
+  settings:
+    title: Pengaturan
+    appearance: Tampilan
+    dark_mode: Mode Gelap
+    language: Bahasa
+    doctor_profile: Profil Dokter
+    edit_profile: Edit Profil
+    flash_updated: Pengaturan berhasil disimpan
+    profile_updated: Profil berhasil diperbarui
+    change_password: Ganti Password
+    password_description: Password digunakan untuk masuk ke akun Anda.
+    current_password: Password Saat Ini
+    new_password: Password Baru
+    password_placeholder: Kosongkan jika tidak ingin ganti
+    confirm_password: Konfirmasi Password Baru
+    password_button: Ganti Password
+    delete_account: Hapus Akun
+    delete_account_description: Setelah menghapus akun, semua data tidak dapat dikembalikan.
+    delete_account_button: Hapus Akun Saya
+    delete_confirm: Yakin ingin menghapus akun? Semua data akan hilang permanen!
+
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      long: "%d %B %Y"
+      short: "%d %b"
+    day_names: [Minggu, Senin, Selasa, Rabu, Kamis, Jumat, Sabtu]
+    abbr_day_names: [Min, Sen, Sel, Rab, Kam, Jum, Sab]
+    month_names: [~, Januari, Februari, Maret, April, Mei, Juni, Juli, Agustus, September, Oktober, November, Desember]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, Mei, Jun, Jul, Agt, Sep, Okt, Nov, Des]

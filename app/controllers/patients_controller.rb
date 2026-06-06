@@ -2,7 +2,7 @@ class PatientsController < ApplicationController
   before_action :set_patient, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @patients = Patient.order(:name)
+    @patients = current_user.patients.order(:name)
 
     if params[:search].present?
       @patients = @patients.search_by(params[:search])
@@ -10,14 +10,14 @@ class PatientsController < ApplicationController
   end
 
   def new
-    @patient = Patient.new
+    @patient = current_user.patients.build
   end
 
   def create
-    @patient = Patient.new(patient_params)
+    @patient = current_user.patients.build(patient_params)
 
     if @patient.save
-      redirect_to @patient, notice: "Pasien berhasil ditambahkan"
+      redirect_to @patient, notice: t("patients.flash.created")
     else
       render :new, status: :unprocessable_entity
     end
@@ -31,7 +31,7 @@ class PatientsController < ApplicationController
 
   def update
     if @patient.update(patient_params)
-      redirect_to @patient, notice: "Data pasien berhasil diperbaharuis"
+      redirect_to @patient, notice: t("patients.flash.updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -39,13 +39,13 @@ class PatientsController < ApplicationController
 
   def destroy
     @patient.discard!
-    redirect_to patients_path, notice: "Pasien berhasil dihapus"
+    redirect_to patients_path, notice: t("patients.flash.deleted")
   end
 
   private
 
   def set_patient
-    @patient = Patient.find(params[:id])
+    @patient = current_user.patients.find(params[:id])
   end
 
   def patient_params

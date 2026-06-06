@@ -17,15 +17,13 @@
       <% end %>
     </div>
     <%= link_to new_appointment_path, class: "inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" do %>
-      <%= lucide_icon "plus", class: "w-4 h-4" %> Janji Baru
+      <%= lucide_icon "plus", class: "w-4 h-4" %> <%= t("appointments.new") %>
     <% end %>
   </div>
 
   <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
     <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50">
-      <% %w[Sen Sel Rab Kam Jum Sab Min].each do |day| %>
-        <div class="px-3 py-2 text-xs font-medium text-gray-500 text-center"><%= day %></div>
-      <% end %>
+      <% [1, 2, 3, 4, 5, 6, 0].each { |i| %><div class="px-3 py-2 text-xs font-medium text-gray-500 text-center"><%= t("date.abbr_day_names")[i] %></div><% } %>
     </div>
 
     <% weeks.each do |week| %>

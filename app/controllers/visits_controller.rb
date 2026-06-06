@@ -2,7 +2,7 @@ class VisitsController < ApplicationController
   before_action :set_visit, only: [ :edit, :update, :update_status ]
 
   def index
-    @visits = Visit.includes(patient: :medical_records).order(visit_date: :desc)
+    @visits = Visit.joins(:patient).where(patients: { user_id: current_user.id }).includes(patient: :medical_records).order(visit_date: :desc)
 
     if params[:status].present?
       @visits = @visits.where(status: params[:status])
@@ -31,7 +31,7 @@ class VisitsController < ApplicationController
     @visit.medical_record.build_plan
 
     if params[:patient_id].present?
-      @patient = Patient.find(params[:patient_id])
+      @patient = current_user.patients.find(params[:patient_id])
       @visit.patient = @patient
     end
   end
@@ -41,7 +41,7 @@ class VisitsController < ApplicationController
     @visit.status = "registered"
 
     if @visit.save
-      redirect_to edit_visit_path(@visit), notice: "Kunjungan berhasil dibuat"
+      redirect_to edit_visit_path(@visit), notice: t("visits.flash.created")
     else
       render :new, status: :unprocessable_entity
     end
@@ -53,7 +53,7 @@ class VisitsController < ApplicationController
 
   def update
     if @visit.update(visit_params)
-      redirect_to edit_visit_path(@visit), notice: "Rekam medis berhasil disimpan"
+      redirect_to edit_visit_path(@visit), notice: t("visits.flash.updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -61,14 +61,14 @@ class VisitsController < ApplicationController
 
   def update_status
     if @visit.update(status: params[:status])
-      redirect_to visits_path, notice: "Status kunjungan berhasil diperbarui"
+      redirect_to visits_path, notice: t("visits.flash.status_updated")
     else
       redirect_to visits_path, alert: "Gagal memperbarui status"
     end
   end
 
   def print_prescription
-    @visit = Visit.includes(:patient, medical_record: { plan: :prescriptions }).find(params[:id])
+    @visit = Visit.joins(:patient).where(patients: { user_id: current_user.id }).includes(:patient, medical_record: { plan: :prescriptions }).find(params[:id])
     @doctor = current_user
     @plan = @visit.medical_record&.plan
 
@@ -114,7 +114,7 @@ class VisitsController < ApplicationController
   private
 
   def set_visit
-    @visit = Visit.find(params[:id])
+    @visit = Visit.joins(:patient).where(patients: { user_id: current_user.id }).find(params[:id])
   end
 
   def visit_params

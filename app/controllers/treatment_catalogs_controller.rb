@@ -2,17 +2,17 @@ class TreatmentCatalogsController < ApplicationController
   before_action :set_treatment_catalog, only: [ :edit, :update, :destroy ]
 
   def index
-    @treatment_catalogs = TreatmentCatalog.order(:code)
+    @treatment_catalogs = current_user.treatment_catalogs.order(:code)
   end
 
   def new
-    @treatment_catalog = TreatmentCatalog.new
+    @treatment_catalog = current_user.treatment_catalogs.build
   end
 
   def create
-    @treatment_catalog = TreatmentCatalog.new(treatment_catalog_params)
+    @treatment_catalog = current_user.treatment_catalogs.build(treatment_catalog_params)
     if @treatment_catalog.save
-      redirect_to treatment_catalogs_path, notice: "Treatment berhasil ditambahkan"
+      redirect_to treatment_catalogs_path, notice: t("treatment.flash.created")
     else
       render :new, status: :unprocessable_entity
     end
@@ -23,7 +23,7 @@ class TreatmentCatalogsController < ApplicationController
 
   def update
     if @treatment_catalog.update(treatment_catalog_params)
-      redirect_to treatment_catalogs_path, notice: "Treatment berhasil diperbarui"
+      redirect_to treatment_catalogs_path, notice: t("treatment.flash.updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -31,13 +31,13 @@ class TreatmentCatalogsController < ApplicationController
 
   def destroy
     @treatment_catalog.destroy!
-    redirect_to treatment_catalogs_path, notice: "Treatment berhasil dihapus"
+    redirect_to treatment_catalogs_path, notice: t("treatment.flash.deleted")
   end
 
   private
 
   def set_treatment_catalog
-    @treatment_catalog = TreatmentCatalog.find(params[:id])
+    @treatment_catalog = current_user.treatment_catalogs.find(params[:id])
   end
 
   def treatment_catalog_params

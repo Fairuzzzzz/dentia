@@ -8,7 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-User.find_or_create_by!(email: "dokter@klinikgigi.com") do |u|
+user = User.find_or_create_by!(email: "dokter@klinikgigi.com") do |u|
   u.password = "password123"
   u.password_confirmation = "password123"
   u.name = "Dr. Gigi"
@@ -30,7 +30,7 @@ treatment_catalogs = [
 ]
 
 treatment_catalogs.each do |tc|
-  TreatmentCatalog.find_or_create_by!(code: tc[:code]) do |t|
+  user.treatment_catalogs.find_or_create_by!(code: tc[:code]) do |t|
     t.name = tc[:name]
     t.category = tc[:category]
   end

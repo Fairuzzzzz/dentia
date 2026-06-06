@@ -1,17 +1,17 @@
 <div class="max-w-5xl mx-auto">
   <div class="flex items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-900">Pasien</h1>
+    <h1 class="text-2xl font-bold text-gray-900"><%= t("patients.title") %></h1>
     <div class="ml-auto -mr-6 bg-teal-600 rounded-lg px-4 py-2">
       <%= link_to new_patient_path, class: "inline-flex items-center gap-2 text-white text-sm font-medium" do %>
-        <%= lucide_icon "plus", class: "w-4 h-4" %> Tambah
+        <%= lucide_icon "plus", class: "w-4 h-4" %> <%= t("common.add") %>
       <% end %>
     </div>
   </div>
 
   <%= form_tag patients_path, method: :get, class: "mb-4" do %>
     <div class="flex gap-2">
-      <%= text_field_tag :search, params[:search], placeholder: "Cari nama, NIK, atau telepon...", class: "w-full max-w-md px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
-      <%= submit_tag "Cari", class: "px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition text-sm font-medium cursor-pointer" %>
+      <%= text_field_tag :search, params[:search], placeholder: t("patients.search_placeholder"), class: "w-full max-w-md px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+      <%= submit_tag t("common.search"), class: "px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition text-sm font-medium cursor-pointer" %>
     </div>
   <% end %>
 
@@ -19,12 +19,12 @@
     <table class="w-full">
       <thead>
         <tr class="bg-gray-50 border-b border-gray-200">
-          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">No. RM</th>
-          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">NIK</th>
-          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Lahir</th>
-          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Telepon</th>
-          <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("activerecord.attributes.patient.patient_number") %></th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("activerecord.attributes.patient.nik") %></th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("activerecord.attributes.patient.name") %></th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("activerecord.attributes.patient.birth_date") %></th>
+          <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("activerecord.attributes.patient.phone") %></th>
+          <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("common.actions") %></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-100">
@@ -42,7 +42,7 @@
                 <%= link_to edit_patient_path(patient), class: "p-1.5 text-gray-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition" do %>
                   <%= lucide_icon "pencil", class: "w-4 h-4" %>
                 <% end %>
-                <%= button_to patient_path(patient), method: :delete, data: { turbo_confirm: "Yakin ingin menghapus #{patient.name}?" }, class: "p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" do %>
+                <%= button_to patient_path(patient), method: :delete, data: { turbo_confirm: "#{t('patients.confirm_delete')} #{patient.name}?" }, class: "p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" do %>
                   <%= lucide_icon "trash-2", class: "w-4 h-4" %>
                 <% end %>
               </div>
@@ -53,9 +53,9 @@
           <tr>
             <td colspan="6" class="px-4 py-12 text-center text-gray-400">
               <% if params[:search].present? %>
-                Tidak ada pasien dengan kata kunci "<%= params[:search] %>"
+                <%= t("patients.no_results") %> "<%= params[:search] %>"
               <% else %>
-                Belum ada pasien. <%= link_to "Tambah pasien pertama", new_patient_path, class: "text-teal-600 hover:underline" %>
+                <%= t("patients.empty") %>. <%= link_to t("patients.add_first"), new_patient_path, class: "text-teal-600 hover:underline" %>
               <% end %>
             </td>
           </tr>

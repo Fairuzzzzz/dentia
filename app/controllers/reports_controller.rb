@@ -1,21 +1,19 @@
 class ReportsController < ApplicationController
-  include ActionView::Helpers::NumberHelper
-
   def index
-    @start_date = (params[:start_date].presence || Date.current.beginning_of_month).to_date
-    @end_date = (params[:end_date].presence || Date.current.end_of_month).to_date
+    @start_date = parse_date(params[:start_date], Date.current.beginning_of_month)
+    @end_date = parse_date(params[:end_date], Date.current.end_of_month)
+    patient_ids = current_user.patients.ids
 
-    visits = Visit.where(visit_date: @start_date.beginning_of_day..@end_date.end_of_day)
-    billings = Billing.where(created_at: @start_date.beginning_of_day..@end_date.end_of_day)
-    patients = Patient.where(created_at: @start_date.beginning_of_day..@end_date.end_of_day)
+    visits = Visit.where(patient_id: patient_ids).where(visit_date: @start_date.beginning_of_day..@end_date.end_of_day)
+    billings = Billing.joins(:visit).where(visits: { patient_id: patient_ids }).where(created_at: @start_date.beginning_of_day..@end_date.end_of_day)
 
     @total_visits = visits.count
-    @new_patients = patients.count
+    @new_patients = current_user.patients.where(created_at: @start_date.beginning_of_day..@end_date.end_of_day).count
     @total_revenue = billings.where(payment_status: "paid").sum(:total_amount)
     @unpaid_revenue = billings.where(payment_status: "unpaid").sum(:total_amount)
     @visits_by_day = visits.group("DATE(visit_date)").count.sort.to_h
-    @max_daily_visits = [ @visits_by_day.values.max, 1 ].max
-    @top_treatments = PlanTreatment.joins(plan: { medical_record: :visit }).where(visits: { visit_date: @start_date.beginning_of_day..@end_date.end_of_day }).group(:treatment_catalog_id).sum(:quantity).sort_by { |_, v| -v }.first(10).map { |id, qty| [ TreatmentCatalog.find(id)&.name || "Unknown", qty ] }
+    @max_daily_visits = [(@visits_by_day.values.max || 0), 1].max
+    @top_treatments = PlanTreatment.joins(plan: { medical_record: :visit }).where(visits: { patient_id: patient_ids }).where(visits: { visit_date: @start_date.beginning_of_day..@end_date.end_of_day }).group(:treatment_catalog_id).sum(:quantity).sort_by { |_, v| -v }.first(10).map { |id, qty| [ TreatmentCatalog.find(id)&.name || "Unknown", qty ] }
   end
 
   def export_pdf
@@ -36,8 +34,8 @@ class ReportsController < ApplicationController
 
     pdf.text "Total Kunjungan: #{@total_visits}", size: 11
     pdf.text "Pasien Baru: #{@new_patients}", size: 11
-    pdf.text "Pendapatan Lunas: Rp #{number_with_delimiter(@total_revenue.to_i)}", size: 11
-    pdf.text "Belum Dibayar: Rp #{number_with_delimiter(@unpaid_revenue.to_i)}", size: 11
+    pdf.text "Pendapatan Lunas: Rp #{@total_revenue.to_i.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, '\\1.')}", size: 11
+    pdf.text "Belum Dibayar: Rp #{@unpaid_revenue.to_i.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, '\\1.')}", size: 11
     pdf.move_down 15
 
     pdf.text "10 Tindakan Terbanyak", size: 14, style: :bold
@@ -56,6 +54,7 @@ class ReportsController < ApplicationController
     @start_date = parse_date(params[:start_date], Date.current.beginning_of_month)
     @end_date = parse_date(params[:end_date], Date.current.end_of_month)
     load_report_data
+    patient_ids = current_user.patients.ids
 
     package = Axlsx::Package.new
     wb = package.workbook
@@ -72,7 +71,7 @@ class ReportsController < ApplicationController
 
     wb.add_worksheet(name: "Detail Kunjungan") do |sheet|
       sheet.add_row [ "No. Kunjungan", "Pasien", "Tanggal", "Status" ]
-      Visit.where(visit_date: @start_date.beginning_of_day..@end_date.end_of_day)
+      Visit.where(patient_id: patient_ids).where(visit_date: @start_date.beginning_of_day..@end_date.end_of_day)
         .includes(:patient).find_each do |v|
         sheet.add_row [ v.visit_number, v.patient.name, v.visit_date.strftime("%d/%m/%Y %H:%M"), v.status.humanize ]
       end
@@ -81,7 +80,7 @@ class ReportsController < ApplicationController
     wb.add_worksheet(name: "Detail Tindakan") do |sheet|
       sheet.add_row [ "Kunjungan", "Pasien", "Tindakan", "Gigi", "Qty", "Harga", "Total" ]
       PlanTreatment.joins(plan: { medical_record: :visit })
-        .where(visits: { visit_date: @start_date.beginning_of_day..@end_date.end_of_day })
+        .where(visits: { patient_id: patient_ids }).where(visits: { visit_date: @start_date.beginning_of_day..@end_date.end_of_day })
         .includes(plan: { medical_record: { visit: :patient } }).find_each do |pt|
         sheet.add_row [
           pt.plan.medical_record.visit.visit_number,
@@ -98,7 +97,7 @@ class ReportsController < ApplicationController
     wb.add_worksheet(name: "Pendapatan per Tindakan") do |sheet|
       sheet.add_row [ "Tindakan", "Jumlah", "Total Pendapatan" ]
       PlanTreatment.joins(plan: { medical_record: :visit })
-        .where(visits: { visit_date: @start_date.beginning_of_day..@end_date.end_of_day })
+        .where(visits: { patient_id: patient_ids }).where(visits: { visit_date: @start_date.beginning_of_day..@end_date.end_of_day })
         .group(:treatment_catalog_id).sum("price * quantity").sort_by { |_, v| -v }.each do |id, total|
         sheet.add_row [ TreatmentCatalog.find(id)&.name, "", total ]
       end
@@ -117,19 +116,20 @@ class ReportsController < ApplicationController
   end
 
   def load_report_data
-    visits = Visit.where(visit_date: @start_date.beginning_of_day..@end_date.end_of_day)
-    billings = Billing.where(created_at: @start_date.beginning_of_day..@end_date.end_of_day)
+    patient_ids = current_user.patients.ids
+    visits = Visit.where(patient_id: patient_ids).where(visit_date: @start_date.beginning_of_day..@end_date.end_of_day)
+    billings = Billing.joins(:visit).where(visits: { patient_id: patient_ids }).where(created_at: @start_date.beginning_of_day..@end_date.end_of_day)
 
     @total_visits = visits.count
-    @new_patients = Patient.where(created_at: @start_date.beginning_of_day..@end_date.end_of_day).count
+    @new_patients = current_user.patients.where(created_at: @start_date.beginning_of_day..@end_date.end_of_day).count
     @total_revenue = billings.where(payment_status: "paid").sum(:total_amount)
     @unpaid_revenue = billings.where(payment_status: "unpaid").sum(:total_amount)
     @visits_by_day = visits.group("DATE(visit_date)").count.sort.to_h
-    @max_daily_visits = [ @visits_by_day.values.max, 1 ].max
+    @max_daily_visits = [(@visits_by_day.values.max || 0), 1].max
 
     @top_treatments = PlanTreatment
       .joins(plan: { medical_record: :visit })
-      .where(visits: { visit_date: @start_date.beginning_of_day..@end_date.end_of_day })
+      .where(visits: { patient_id: patient_ids }).where(visits: { visit_date: @start_date.beginning_of_day..@end_date.end_of_day })
       .group(:treatment_catalog_id)
       .sum(:quantity)
       .sort_by { |_, v| -v }
