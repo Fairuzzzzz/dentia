@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto">
+<div class="max-w-5xl mx-auto overflow-x-hidden">
   <div class="flex items-center gap-3 mb-6">
     <%= link_to visits_path, class: "p-1.5 text-gray-400 hover:text-gray-600 transition" do %>
       <%= lucide_icon "arrow-left", class: "w-5 h-5" %>
@@ -70,7 +70,7 @@
           <%= mr.fields_for :objective_examination do |oe| %>
             <div class="bg-gray-50 rounded-lg p-4 mb-4">
               <h3 class="text-sm font-semibold text-gray-700 mb-3">Tanda Vital</h3>
-              <div class="grid grid-cols-4 gap-3">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3">
                 <div>
                   <%= oe.label :systole, "TD Sistole", class: "block text-xs font-medium text-gray-600 mb-1" %>
                   <%= oe.number_field :systole, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "mmHg" %>
@@ -127,7 +127,7 @@
               <% end %>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
               <div>
                 <%= oe.label :supporting_action, "Tindakan Penunjang", class: "block text-sm font-medium text-gray-700 mb-1" %>
                 <%= oe.text_field :supporting_action, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Rontgen, dll" %>
@@ -150,7 +150,7 @@
           </h2>
 
           <%= mr.fields_for :assessment do |ass| %>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <%= ass.label :icd_code, "Kode ICD-10", class: "block text-sm font-medium text-gray-700 mb-1" %>
                 <%= ass.text_field :icd_code, class: "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "K00.0" %>

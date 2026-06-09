@@ -14,7 +14,8 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-    @appointment = current_user.patients.find(params[:patient_id]).appointments.build(appointment_params)
+    patient = current_user.patients.find(appointment_params[:patient_id])
+    @appointment = patient.appointments.build(appointment_params)
 
     if @appointment.save
       redirect_to appointments_path, notice: t("appointments.flash.created")

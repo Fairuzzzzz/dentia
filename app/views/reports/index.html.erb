@@ -1,27 +1,29 @@
-<div class="max-w-4xl mx-auto">
+<div class="max-w-5xl mx-auto overflow-x-hidden">
   <h1 class="text-2xl font-bold text-gray-900 mb-6"><%= t("reports.title") %></h1>
 
   <%= form_tag reports_path, method: :get, class: "bg-white rounded-xl border border-gray-200 p-4 mb-6" do %>
-    <div class="flex items-end gap-3">
+    <div class="flex flex-wrap items-end gap-2 md:gap-3">
       <div>
         <%= label_tag :start_date, t("reports.from"), class: "block text-xs font-medium text-gray-600 mb-1" %>
-        <%= date_field_tag :start_date, @start_date, class: "px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+        <%= date_field_tag :start_date, @start_date, class: "w-full md:w-auto px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
       </div>
       <div>
         <%= label_tag :end_date, t("reports.to"), class: "block text-xs font-medium text-gray-600 mb-1" %>
-        <%= date_field_tag :end_date, @end_date, class: "px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
+        <%= date_field_tag :end_date, @end_date, class: "w-full md:w-auto px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
       </div>
-      <%= submit_tag t("reports.show"), class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium cursor-pointer" %>
-      <%= link_to export_pdf_reports_path(start_date: @start_date, end_date: @end_date), class: "px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-sm font-medium inline-flex items-center gap-1" do %>
-        <%= lucide_icon "file-text", class: "w-4 h-4" %> <%= t("reports.pdf") %>
-      <% end %>
-      <%= link_to export_excel_reports_path(start_date: @start_date, end_date: @end_date), class: "px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium inline-flex items-center gap-1" do %>
-        <%= lucide_icon "file-spreadsheet", class: "w-4 h-4" %> <%= t("reports.excel") %>
-      <% end %>
+      <div class="flex flex-wrap items-end gap-2 md:gap-3">
+        <%= submit_tag t("reports.show"), class: "px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium cursor-pointer" %>
+        <%= link_to export_pdf_reports_path(start_date: @start_date, end_date: @end_date), class: "px-3 md:px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-xs md:text-sm font-medium inline-flex items-center gap-1" do %>
+          <%= lucide_icon "file-text", class: "w-3 h-3 md:w-4 md:h-4" %> <%= t("reports.pdf") %>
+        <% end %>
+        <%= link_to export_excel_reports_path(start_date: @start_date, end_date: @end_date), class: "px-3 md:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-xs md:text-sm font-medium inline-flex items-center gap-1" do %>
+          <%= lucide_icon "file-spreadsheet", class: "w-3 h-3 md:w-4 md:h-4" %> <%= t("reports.excel") %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 
-  <div class="grid grid-cols-3 gap-4 mb-6">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
     <div class="bg-white rounded-xl border border-gray-200 p-4">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
@@ -59,14 +61,28 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-2 gap-4 mb-6">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
     <div class="bg-white rounded-xl border border-gray-200 p-4">
       <h2 class="text-sm font-semibold text-gray-700 mb-4"><%= t("reports.daily_visits") %></h2>
-      <div class="flex items-end gap-2 h-32">
-        <% @visits_by_day.each do |date, count| %>
-          <div class="flex-1 flex flex-col items-center gap-1">
-            <div class="w-full bg-teal-500 rounded-t transition-all" style="height: <%= (count.to_f / @max_daily_visits * 100).round %>%"></div>
-            <span class="text-xs text-gray-400"><%= date.strftime("%d") %></span>
+      <div class="flex items-end gap-2 h-40" style="border-bottom: 1px solid #e5e7eb;">
+        <% if @visits_by_day.values.any? { |c| c > 0 } %>
+          <% max_h = 120 %>
+          <% @visits_by_day.each do |date, count| %>
+            <% bar_h = count > 0 ? (count.to_f / @max_daily_visits * max_h).round : 0 %>
+            <div class="flex-1 flex flex-col items-center justify-end h-full">
+              <% if count > 0 %>
+                <span class="text-[10px] text-gray-500 font-medium mb-1"><%= count %></span>
+                <div class="w-full max-w-[32px] bg-teal-500 rounded-t" style="height: <%= bar_h %>px;"></div>
+              <% else %>
+                <span class="text-[10px] text-gray-300 mb-1">0</span>
+                <div class="w-full max-w-[32px]" style="height: 1px;"></div>
+              <% end %>
+              <span class="text-xs text-gray-400 mt-1"><%= date.strftime("%d") %></span>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="w-full flex items-center justify-center h-full text-sm text-gray-400">
+            Belum ada data
           </div>
         <% end %>
       </div>

@@ -16,9 +16,84 @@
 
   <body class="bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
     <% if user_signed_in? %>
-      <div class="flex h-screen">
-        <%= render "shared/sidebar" %>
-        <main class="flex-1 overflow-y-auto p-6">
+      <div data-controller="mobile-menu" class="flex h-screen">
+        <div data-mobile-menu-target="overlay" data-action="click->mobile-menu#close" class="hidden fixed inset-0 bg-black/50 z-20 md:hidden"></div>
+
+        <aside data-mobile-menu-target="sidebar" class="fixed md:static inset-y-0 left-0 z-30 w-64 -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+          <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+            <div>
+              <h1 class="text-base font-bold text-teal-600">Dentia</h1>
+              <p class="text-[10px] text-gray-400"><%= t("sidebar.clinic") %></p>
+            </div>
+            <button type="button" data-action="click->mobile-menu#close" class="md:hidden p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+
+          <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+            <%= link_to dashboard_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{current_page?(dashboard_path) ? 'bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}",
+                data: { action: "click->mobile-menu#close" } do %>
+              <%= lucide_icon "layout-dashboard", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.dashboard") %>
+            <% end %>
+
+            <%= link_to patients_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{controller_name == 'patients' ? 'bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}",
+                data: { action: "click->mobile-menu#close" } do %>
+              <%= lucide_icon "users", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.patients") %>
+            <% end %>
+
+            <%= link_to visits_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{controller_name == 'visits' ? 'bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}",
+                data: { action: "click->mobile-menu#close" } do %>
+              <%= lucide_icon "clipboard-list", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.visits") %>
+            <% end %>
+
+            <%= link_to appointments_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{controller_name == 'appointments' ? 'bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}",
+                data: { action: "click->mobile-menu#close" } do %>
+              <%= lucide_icon "calendar", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.appointments") %>
+            <% end %>
+
+            <%= link_to billings_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{controller_name == 'billings' ? 'bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}",
+                data: { action: "click->mobile-menu#close" } do %>
+              <%= lucide_icon "wallet", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.billings") %>
+            <% end %>
+
+            <%= link_to reports_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{controller_name == 'reports' ? 'bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}",
+                data: { action: "click->mobile-menu#close" } do %>
+              <%= lucide_icon "chart-bar", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.reports") %>
+            <% end %>
+
+            <%= link_to treatment_catalogs_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{current_page?(treatment_catalogs_path) ? 'bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}",
+                data: { action: "click->mobile-menu#close" } do %>
+              <%= lucide_icon "list-checks", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.treatment_catalog") %>
+            <% end %>
+
+            <div class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+              <p class="px-3 text-xs font-medium text-gray-400 uppercase tracking-wider"><%= t("sidebar.settings_title") %></p>
+
+              <%= link_to settings_preferences_path, class: "mt-2 flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{controller_name == 'preferences' ? 'bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}",
+                  data: { action: "click->mobile-menu#close" } do %>
+                <%= lucide_icon "settings", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.settings") %>
+              <% end %>
+
+              <%= link_to edit_profile_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm #{controller_name == 'profiles' ? 'bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}",
+                  data: { action: "click->mobile-menu#close" } do %>
+                <%= lucide_icon "user", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.doctor_profile") %>
+              <% end %>
+            </div>
+          </nav>
+
+          <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+            <%= button_to destroy_user_session_path, method: :delete,
+                data: { turbo_confirm: "Yakin ingin keluar?" },
+                class: "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition" do %>
+              <%= lucide_icon "log-out", class: "w-4 h-4 shrink-0" %> <%= t("sidebar.logout") %>
+            <% end %>
+          </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-6">
+          <button type="button" data-action="click->mobile-menu#toggle" class="md:hidden mb-4 p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
           <%= render "shared/flash" %>
           <%= yield %>
         </main>

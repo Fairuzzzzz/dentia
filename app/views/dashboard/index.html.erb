@@ -2,7 +2,7 @@
   <h1 class="text-2xl font-bold text-gray-900"><%= t("dashboard.title") %></h1>
 
   <%# Stat Cards %>
-  <div class="grid grid-cols-4 gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
     <div class="bg-white rounded-xl border border-gray-200 p-4">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
@@ -53,15 +53,29 @@
   </div>
 
   <%# Chart and Actions Row %>
-  <div class="grid grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
     <%# Chart %>
     <div class="col-span-2 bg-white rounded-xl border border-gray-200 p-4">
       <h2 class="text-sm font-semibold text-gray-700 mb-4"><%= t("dashboard.chart_title") %></h2>
-      <div class="flex items-end gap-2 h-32">
-        <% @visits_by_day.each do |day| %>
-          <div class="flex-1 flex flex-col items-center gap-1">
-            <div class="w-full bg-teal-500 rounded-t" style="height: <%= (day[:count].to_f / @max_visit_count * 100).round %>%"></div>
-            <span class="text-xs text-gray-400"><%= day[:date]&.strftime("%a") %></span>
+      <div class="flex items-end gap-2 h-40" style="border-bottom: 1px solid #e5e7eb;">
+        <% if @visits_by_day.any? { |d| d[:count] > 0 } %>
+          <% max_h = 120 %>
+          <% @visits_by_day.each do |day| %>
+            <% bar_h = day[:count] > 0 ? (day[:count].to_f / @max_visit_count * max_h).round : 0 %>
+            <div class="flex-1 flex flex-col items-center justify-end h-full">
+              <% if day[:count] > 0 %>
+                <span class="text-[10px] text-gray-500 font-medium mb-1"><%= day[:count] %></span>
+                <div class="w-full max-w-[32px] bg-teal-500 rounded-t" style="height: <%= bar_h %>px;"></div>
+              <% else %>
+                <span class="text-[10px] text-gray-300 mb-1">0</span>
+                <div class="w-full max-w-[32px]" style="height: 1px;"></div>
+              <% end %>
+              <span class="text-xs text-gray-400 mt-1"><%= t("date.abbr_day_names")[day[:date].wday] %></span>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="w-full flex items-center justify-center h-full text-sm text-gray-400">
+            Belum ada data kunjungan 7 hari terakhir
           </div>
         <% end %>
       </div>
@@ -102,7 +116,8 @@
         <%= t("dashboard.view_all") %>
       <% end %>
     </div>
-    <table class="w-full">
+    <div class="overflow-x-auto">
+    <table class="w-full min-w-[500px]">
       <thead>
         <tr class="bg-gray-50 border-b border-gray-200">
           <th class="text-left px-4 py-2 text-xs font-medium text-gray-500"><%= t("visits.table.patient") %></th>
@@ -139,6 +154,7 @@
         <% end %>
       </tbody>
     </table>
+    </div>
   </div>
 
   <%# Upcoming Appointments %>
@@ -149,7 +165,8 @@
         <%= t("dashboard.view_all") %>
       <% end %>
     </div>
-    <table class="w-full">
+    <div class="overflow-x-auto">
+    <table class="w-full min-w-[500px]">
       <thead>
         <tr class="bg-gray-50 border-b border-gray-200">
           <th class="text-left px-4 py-2 text-xs font-medium text-gray-500"><%= t("billings.table.date") %></th>
@@ -182,5 +199,6 @@
         <% end %>
       </tbody>
     </table>
+    </div>
   </div>
 </div>

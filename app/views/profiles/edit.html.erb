@@ -18,7 +18,7 @@
         </div>
       <% end %>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <%= f.label :name, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
           <%= f.text_field :name, class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: "Dr. ..." %>
@@ -66,7 +66,7 @@
         <%= f.label :current_password, t("settings.current_password"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
         <%= f.password_field :current_password, autocomplete: "current-password", class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none" %>
       </div>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <%= f.label :password, t("settings.new_password"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
           <%= f.password_field :password, autocomplete: "new-password", class: "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none", placeholder: t("settings.password_placeholder") %>

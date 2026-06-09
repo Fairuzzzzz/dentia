@@ -5,19 +5,19 @@
   weeks = days.each_slice(7).to_a
 %>
 
-<div class="max-w-5xl mx-auto">
-  <div class="flex items-center justify-between mb-6">
-    <div class="flex items-center gap-3">
-      <%= link_to appointments_path(month: @month - 1, year: @month == 1 ? @year - 1 : @year), class: "p-2 text-gray-400 hover:text-gray-600 transition" do %>
-        <%= lucide_icon "chevron-left", class: "w-5 h-5" %>
+<div class="max-w-5xl mx-auto overflow-x-hidden">
+  <div class="flex items-center justify-between mb-4 md:mb-6">
+    <div class="flex items-center gap-2 md:gap-3">
+      <%= link_to appointments_path(month: @month - 1, year: @month == 1 ? @year - 1 : @year), class: "p-1 md:p-2 text-gray-400 hover:text-gray-600 transition" do %>
+        <%= lucide_icon "chevron-left", class: "w-4 h-4 md:w-5 md:h-5" %>
       <% end %>
-      <h1 class="text-2xl font-bold text-gray-900"><%= t("date.month_names")[@month] %> <%= @year %></h1>
-      <%= link_to appointments_path(month: @month + 1, year: @month == 12 ? @year + 1 : @year), class: "p-2 text-gray-400 hover:text-gray-600 transition" do %>
-        <%= lucide_icon "chevron-right", class: "w-5 h-5" %>
+      <h1 class="text-lg md:text-2xl font-bold text-gray-900"><%= t("date.month_names")[@month] %> <%= @year %></h1>
+      <%= link_to appointments_path(month: @month + 1, year: @month == 12 ? @year + 1 : @year), class: "p-1 md:p-2 text-gray-400 hover:text-gray-600 transition" do %>
+        <%= lucide_icon "chevron-right", class: "w-4 h-4 md:w-5 md:h-5" %>
       <% end %>
     </div>
-    <%= link_to new_appointment_path, class: "inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-medium" do %>
-      <%= lucide_icon "plus", class: "w-4 h-4" %> <%= t("appointments.new") %>
+    <%= link_to new_appointment_path, class: "inline-flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-xs md:text-sm font-medium" do %>
+      <%= lucide_icon "plus", class: "w-3 h-3 md:w-4 md:h-4" %> <%= t("appointments.new") %>
     <% end %>
   </div>
 
@@ -26,21 +26,21 @@
       <% [1, 2, 3, 4, 5, 6, 0].each { |i| %><div class="px-3 py-2 text-xs font-medium text-gray-500 text-center"><%= t("date.abbr_day_names")[i] %></div><% } %>
     </div>
 
-    <% weeks.each do |week| %>
+        <% weeks.each do |week| %>
       <div class="grid grid-cols-7 border-b border-gray-100 last:border-b-0">
         <% week.each do |day| %>
-          <div class="min-h-24 px-2 py-2 border-r border-gray-100 last:border-r-0 <%= day.month == @month ? '' : 'bg-gray-50' %>">
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-xs font-medium <%= day == Date.current ? 'bg-teal-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : day.month == @month ? 'text-gray-900' : 'text-gray-400' %>">
+          <div class="min-h-[50px] md:min-h-24 px-0.5 md:px-2 py-0.5 md:py-2 border-r border-gray-100 last:border-r-0 <%= day.month == @month ? '' : 'bg-gray-50' %>">
+            <div class="flex items-center justify-between mb-0.5 md:mb-1">
+              <span class="text-[10px] md:text-xs font-medium <%= day == Date.current ? 'bg-teal-600 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center' : day.month == @month ? 'text-gray-900' : 'text-gray-400' %>">
                 <%= day.day %>
               </span>
               <%= link_to new_appointment_path(date: day), class: "text-gray-300 hover:text-teal-600 transition" do %>
-                <%= lucide_icon "plus", class: "w-3 h-3" %>
+                <%= lucide_icon "plus", class: "w-2.5 h-2.5 md:w-3 md:h-3" %>
               <% end %>
             </div>
-            <div class="space-y-1">
+            <div class="space-y-0.5">
               <% @appointments.select { |a| a.appointment_date.to_date == day }.each do |apt| %>
-                <%= link_to edit_appointment_path(apt), class: "block px-1.5 py-0.5 rounded text-xs truncate #{apt.status == 'cancelled' ? 'bg-red-50 text-red-600 line-through' : apt.status == 'completed' ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}" do %>
+                <%= link_to edit_appointment_path(apt), class: "block px-0.5 md:px-1.5 py-0.5 rounded text-[9px] md:text-xs leading-tight truncate #{apt.status == 'cancelled' ? 'bg-red-50 text-red-600 line-through' : apt.status == 'completed' ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}" do %>
                   <%= apt.appointment_date.strftime("%H:%M") %> <%= apt.patient.name.split.first %>
                 <% end %>
               <% end %>
