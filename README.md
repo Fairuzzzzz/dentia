@@ -237,12 +237,6 @@ app/
 
 ---
 
-## Lisensi
-
-MIT License — silakan gunakan, modifikasi, dan distribusikan.
-
----
-
 ## Kontribusi
 
 1. Fork repositori
