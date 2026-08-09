@@ -1,76 +1,77 @@
 <div align="center">
   <h1>Dentia</h1>
-  <p><strong>Sistem Informasi Manajemen Klinik Gigi</strong></p>
-  <p>Aplikasi web untuk dokter gigi mandiri (<em>solo practice</em>) di Indonesia</p>
+  <p><strong>Dental Clinic Management Information System</strong></p>
+  <p>A web application for solo dental practitioners in Indonesia</p>
 </div>
 
 ---
 
-## Fitur
+## Features
 
-- **Autentikasi Multi-User** — Registrasi akun, login, ganti password, hapus akun
-- **Data Pasien** — CRUD pasien, pencarian (nama/NIK/telepon), nomor RM random 5 digit
-- **Rekam Medis SOAP** — Form lengkap dengan Subjektif, Objektif (tanda vital, odontogram), Assessment (ICD-10), Plan (resep + tindakan)
-- **Odontogram SVG Interaktif** — 32 gigi dewasa (FDI) + 20 gigi anak, pilih status (karies, tambalan, cabut, dll) dengan 5 permukaan, panel simpan/batal
-- **Katalog Tindakan** — Master data tindakan gigi (kode, nama, kategori)
-- **Kunjungan** — Manajemen kunjungan dengan status (terdaftar → diperiksa → selesai), auto-billing saat selesai
-- **Penjadwalan** — Kalender bulanan, buat/edit janji temu, auto-appointment dari kunjungan berikutnya
-- **Pembiayaan** — Auto-generate billing dari tindakan, catat pembayaran (cash/transfer/BPJS/asuransi)
-- **Dashboard** — Statistik harian (kunjungan, pasien baru, pendapatan), grafik 7 hari, shortcut
-- **Laporan** — Filter tanggal, ringkasan kunjungan/pasien/pendapatan, export PDF & Excel (4 sheet)
-- **Cetak Resep & Invoice** — PDF via Prawn dengan header klinik, format A5/A4
-- **Dark Mode** — Toggle tema gelap, persist ke localStorage
-- **Multi Bahasa** — Indonesia / English (beralih real-time)
-- **Responsive Mobile** — Sidebar hamburger, tabel scroll horizontal, grid dinamis
-- **Soft Delete** — Data pasien tidak hilang permanen (Discard gem)
+- **Multi-User Authentication** — Account registration, login, change password, delete account
+- **Patient Data** — Patient CRUD, search (name/NIK/phone), random 5-digit medical record number
+- **SOAP Medical Records** — Complete form with Subjective, Objective (vital signs, odontogram), Assessment (ICD-10), Plan (prescriptions + treatments)
+- **Interactive SVG Odontogram** — 32 permanent teeth (FDI) + 20 primary teeth, select status (caries, filling, extraction, etc.) with 5 surfaces, save/cancel panel
+- **Treatment Catalog** — Dental procedure master data (code, name, category)
+- **Visits** — Visit management with status (registered → in progress → completed), auto-billing on completion
+- **Scheduling** — Monthly calendar, create/edit appointments, auto-appointment from next visit
+- **Billing** — Auto-generated billing from treatments, record payments (cash/transfer/BPJS/insurance)
+- **Dashboard** — Daily statistics (visits, new patients, revenue), 7-day chart, shortcuts
+- **Reports** — Date filter, visit/patient/revenue summary, PDF & Excel export (4 sheets)
+- **Prescription & Invoice Printing** — PDF via Prawn with clinic header, A5/A4 format
+- **Dark Mode** — Toggle dark theme, persisted to localStorage
+- **Multi Language** — Indonesian / English (real-time switching)
+- **Mobile Responsive** — Hamburger sidebar, horizontal-scroll tables, dynamic grid
+- **Soft Delete** — Patient data is never permanently lost (Discard gem)
+- **ICD-10 Autocomplete** — Search dental diagnosis codes (K00–K14) in the Assessment form
 
 ---
 
 ## Tech Stack
 
-| Teknologi | Kegunaan |
-|-----------|----------|
-| **Ruby on Rails 8.1** | Framework full-stack |
-| **Hotwire** (Turbo + Stimulus) | Frontend interaktif tanpa React/Vue |
-| **Tailwind CSS v4** | Styling utility-first |
+| Technology | Purpose |
+|-----------|---------|
+| **Ruby on Rails 8.1** | Full-stack framework |
+| **Hotwire** (Turbo + Stimulus) | Interactive frontend without React/Vue |
+| **Tailwind CSS v4** | Utility-first styling |
 | **PostgreSQL 16** | Database |
-| **Devise** | Autentikasi |
-| **Prawn + Prawn-Table** | Export PDF (resep, invoice, laporan) |
-| **Caxlsx + Caxlsx-Rails** | Export Excel (laporan 4 sheet) |
+| **Devise** | Authentication |
+| **Prawn + Prawn-Table** | PDF export (prescriptions, invoices, reports) |
+| **Caxlsx + Caxlsx-Rails** | Excel export (4-sheet report) |
 | **Pagy** | Pagination |
 | **Ransack** | Search & filter |
 | **Discard** | Soft delete |
 | **Lucide-Rails** | Icons |
-| **Solid Queue** | Background jobs (built-in Rails 8) |
+| **Solid Queue** | Background jobs (built into Rails 8) |
 | **Docker** | PostgreSQL container |
 
 ---
 
-## Prasyarat
+## Prerequisites
 
 - **Ruby** 3.4+
 - **Bundler**
-- **Docker** (untuk PostgreSQL)
-- **Node.js** (untuk importmap)
+- **Docker** (for PostgreSQL)
+- **Node.js** (for importmap)
 
 ---
 
-## Cara Install & Running
+## Installation & Running
 
-### 1. Clone repositori
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Fairuzzzzz/dentia.git
 cd dentia
 ```
 
-### 2. Setup environment variables
+### 2. Set up environment variables
 
 ```bash
 cp .env.example .env
 ```
 
-Isi file `.env`:
+Fill in the `.env` file:
 ```env
 DB_USERNAME=dentia
 DB_PASSWORD=dentia_password
@@ -89,21 +90,21 @@ docker compose up -d
 bundle install
 ```
 
-### 5. Setup database
+### 5. Set up the database
 
 ```bash
 rails db:create db:migrate db:seed
 ```
 
-### 6. Jalankan aplikasi
+### 6. Run the application
 
 ```bash
 bin/dev
 ```
 
-Akses di browser: **http://localhost:3000**
+Access in your browser: **http://localhost:3000**
 
-### Akun Default (seed)
+### Default Account (seed)
 
 | Email | Password |
 |-------|----------|
@@ -111,9 +112,9 @@ Akses di browser: **http://localhost:3000**
 
 ---
 
-## Docker Setup Detail
+## Docker Setup Details
 
-`compose.yaml` menjalankan PostgreSQL 16 dengan konfigurasi dari file `.env`:
+`compose.yaml` runs PostgreSQL 16 with configuration from the `.env` file:
 
 ```yaml
 services:
@@ -129,11 +130,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
 ```
 
-Data database persist di volume `postgres_data`.
+Database data persists in the `postgres_data` volume.
 
 ---
 
-## Struktur Database
+## Database Structure
 
 ### Entity Relationship Diagram
 
@@ -149,29 +150,30 @@ patients ──┬── visits ──── medical_records ──┬── sub
 visits ──── billings ──── billing_items ──── plan_treatments
 ```
 
-### Tabel Utama (14 tabel)
+### Main Tables (14 tables)
 
-| Tabel | Keterangan |
+| Table | Description |
 |-------|------------|
-| `users` | Akun dokter |
-| `patients` | Data pasien (soft delete via discard) |
-| `visits` | Kunjungan pasien |
-| `medical_records` | Rekam medis (1 per kunjungan) |
-| `subjective_examinations` | S — Subjektif (keluhan, RPS) |
-| `objective_examinations` | O — Objektif (tanda vital, fisik) |
-| `odontograms` | Data gigi (JSONB) |
+| `users` | Doctor accounts |
+| `patients` | Patient data (soft delete via discard) |
+| `visits` | Patient visits |
+| `medical_records` | Medical records (1 per visit) |
+| `subjective_examinations` | S — Subjective (complaints, history) |
+| `objective_examinations` | O — Objective (vital signs, physical exam) |
+| `odontograms` | Tooth data (JSONB) |
 | `assessments` | A — Assessment (ICD-10, diagnosis) |
-| `plans` | P — Plan (resep, tindakan, follow-up) |
-| `prescriptions` | Obat/resep |
-| `plan_treatments` | Tindakan per plan |
-| `treatment_catalogs` | Katalog tindakan (master data) |
-| `appointments` | Janji temu |
-| `billings` | Pembiayaan |
-| `billing_items` | Detail billing per tindakan |
+| `plans` | P — Plan (prescriptions, treatments, follow-up) |
+| `prescriptions` | Medications/prescriptions |
+| `plan_treatments` | Treatments per plan |
+| `treatment_catalogs` | Treatment catalog (master data) |
+| `appointments` | Appointments |
+| `billings` | Billing |
+| `billing_items` | Billing details per treatment |
+| `icd_codes` | ICD-10 dental diagnosis codes (K00–K14) |
 
 ---
 
-## Struktur Direktori
+## Directory Structure
 
 ```
 app/
@@ -185,6 +187,7 @@ app/
 │   ├── billings_controller.rb
 │   ├── reports_controller.rb
 │   ├── profiles_controller.rb
+│   ├── icd_codes_controller.rb
 │   ├── settings/
 │   │   └── preferences_controller.rb
 │   └── users/
@@ -195,7 +198,7 @@ app/
 │   ├── odontogram.rb, assessment.rb, plan.rb
 │   ├── prescription.rb, plan_treatment.rb
 │   ├── treatment_catalog.rb, appointment.rb
-│   ├── billing.rb, billing_item.rb
+│   ├── billing.rb, billing_item.rb, icd_code.rb
 ├── views/
 │   ├── layouts/application.html.erb
 │   ├── shared/_sidebar.html.erb, _flash.html.erb
@@ -210,19 +213,20 @@ app/
     ├── dark_mode_controller.js
     ├── mobile_menu_controller.js
     ├── nested_form_controller.js
+    ├── icd_autocomplete_controller.js
 ```
 
 ---
 
-## Rencana Pengembangan
+## Roadmap
 
-- [ ] **Autocomplete ICD-10** — Daftar kode ICD untuk diagnosis gigi di form Assessment
-- [ ] **Template Resep** — Resep dengan dosis standar yang bisa dipilih cepat
-- [ ] **Riwayat Pasien** — Tab riwayat lengkap (kunjungan, billing, odontogram)
-- [ ] **Notifikasi** — Pengingat janji temu via email/WhatsApp
-- [ ] **Multi Klinik** — Dukungan untuk beberapa klinik dalam satu akun
-- [ ] **API** — REST API untuk integrasi dengan sistem lain
-- [ ] **CI/CD** — GitHub Actions untuk test otomatis
+- [x] **ICD-10 Autocomplete** — Dental diagnosis codes in the Assessment form
+- [ ] **Prescription Templates** — Standard-dosage prescriptions for quick selection
+- [ ] **Patient History** — Complete history tab (visits, billing, odontogram)
+- [ ] **Notifications** — Appointment reminders via email/WhatsApp
+- [ ] **Multi-Clinic** — Support for multiple clinics in one account
+- [ ] **API** — REST API for integration with other systems
+- [ ] **CI/CD** — GitHub Actions for automated testing
 
 ---
 
@@ -230,17 +234,23 @@ app/
 
 | | |
 |:---:|:---:|
-| ![Dashboard](screenshots/Dashboard.png) | ![Detail Kunjungan](screenshots/Detail_Kunjungan.png) |
-| **Dashboard** — Ringkasan harian, grafik, shortcut | **SOAP Form** — Rekam medis Subjektif, Objektif, Assessment, Plan |
-| ![Penjadwalan](screenshots/Penjadwalan.png) | ![Register](screenshots/Register.png) |
-| **Kalender** — Janji temu bulanan | **Register** — Pendaftaran akun baru |
+| ![Dashboard](screenshots/Dashboard.png) | ![Visit Detail](screenshots/Detail_Kunjungan.png) |
+| **Dashboard** — Daily summary, chart, shortcuts | **SOAP Form** — Subjective, Objective, Assessment, Plan |
+| ![Scheduling](screenshots/Penjadwalan.png) | ![Register](screenshots/Register.png) |
+| **Calendar** — Monthly appointments | **Register** — New account registration |
 
 ---
 
-## Kontribusi
+## License
 
-1. Fork repositori
-2. Buat branch fitur (`git checkout -b fitur-keren`)
-3. Commit perubahan (`git commit -m 'Tambah fitur keren'`)
-4. Push ke branch (`git push origin fitur-keren`)
-5. Buat Pull Request
+MIT License — free to use, modify, and distribute.
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature-name`)
+3. Commit your changes (`git commit -m 'Add awesome feature'`)
+4. Push to the branch (`git push origin feature-name`)
+5. Open a Pull Request

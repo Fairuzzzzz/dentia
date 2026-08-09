@@ -36,3 +36,6 @@
 
 /vendor/bundle
 /.github
+
+# Tailwind build output
+/app/assets/builds

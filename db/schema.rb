@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_06_093500) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_09_030131) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -88,6 +88,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_06_093500) do
     t.datetime "updated_at", null: false
     t.uuid "visit_id", null: false
     t.index ["visit_id"], name: "index_billings_on_visit_id"
+  end
+
+  create_table "icd_codes", force: :cascade do |t|
+    t.string "category"
+    t.string "code", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_icd_codes_on_code", unique: true
   end
 
   create_table "medical_records", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
